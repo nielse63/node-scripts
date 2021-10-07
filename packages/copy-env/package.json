@@ -1,0 +1,45 @@
+{
+  "name": "@nielse63/copy-env",
+  "version": "0.0.1-alpha.0",
+  "description": "Format and copy .env files to env.sample to keep up to date",
+  "keywords": [
+    "env",
+    "envlint",
+    "node-scripts"
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/copy-env#readme",
+  "license": "ISC",
+  "main": "dist/copy-env.js",
+  "module": "src/copy-env.js",
+  "bin": {
+    "copy-env": "bin/copy-env"
+  },
+  "directories": {
+    "lib": "dist",
+    "test": "__tests__"
+  },
+  "files": [
+    "bin",
+    "dist"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@nielse63/helpers": "^0.0.1-alpha.0",
+    "commander": "^8.2.0",
+    "fs-extra": "^10.0.0",
+    "signale": "^1.4.0"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  }
+}

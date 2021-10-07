@@ -25,7 +25,11 @@ const main = async () => {
     `find ${paths.packages} -type f -name '*.js' -or -name '*.ts' ! -path "**/node_modules/**" ! -path "**/dist/**" ! -name '*.spec.*' ! -name '*.test.*'`
   );
   const files = string.split('\n').filter((file) => {
-    if (file.includes('/node_modules/') || file.includes('/dist/')) {
+    if (
+      file.includes('/node_modules/') ||
+      file.includes('/dist/') ||
+      file.includes('.spec.')
+    ) {
       return false;
     }
     return true;

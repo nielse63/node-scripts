@@ -1,13 +1,10 @@
-#!/usr/bin/env node
-const path = require('path');
-const fs = require('fs-extra');
-const log = require('signale');
-const paths = require('./helpers/paths');
-const cache = require('./helpers/cache');
-const exec = require('./helpers/exec');
+import path from 'path';
+import fs from 'fs-extra';
+import log from 'signale';
+import { cache, exec } from '@nielse63/helpers';
 
-const envPath = path.join(paths.ROOT, '.env');
-const envSamplePath = path.join(paths.ROOT, '.env.sample');
+let envPath;
+let envSamplePath;
 
 const formatEnv = async () => {
   const content = await fs.readFile(envPath, 'utf8');
@@ -36,7 +33,10 @@ const writeToCache = async (content) => {
   await cache.write('.env', content);
 };
 
-const main = async () => {
+export default async (cwd) => {
+  envPath = path.join(cwd, '.env');
+  envSamplePath = path.join(cwd, '.env.sample');
+
   if (!fs.existsSync(envPath)) return;
   const shouldCopyEnv = await didFileChange();
   if (!shouldCopyEnv) return;
@@ -45,5 +45,3 @@ const main = async () => {
   await writeToCache(content);
   log.success('.env updated');
 };
-
-main().catch(log.error);
