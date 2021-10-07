@@ -1,0 +1,30 @@
+#!/usr/bin/env node
+const fs = require('fs-extra');
+const log = require('signale');
+const paths = require('./helpers/paths');
+const exec = require('./helpers/exec');
+
+const main = async () => {
+  const string = await exec(`find ${paths.packages} -name '*.test.js'`);
+  const files = string.split('\n');
+  files
+    .map((file) => {
+      const newFile = file.replace(/\.test.js$/, '.spec.js');
+      return { oldName: file, newName: newFile };
+    })
+    .filter(({ newName }) => !fs.existsSync(newName))
+    .forEach(async ({ oldName, newName }) => {
+      try {
+        await fs.rename(oldName, newName);
+        log.success(`${oldName} -> ${newName}`);
+      } catch (error) {
+        log.error(error);
+      }
+    });
+};
+
+main()
+  .then(() => {
+    log.success('Renamed all test files to *.spec.js');
+  })
+  .catch(log.error);
