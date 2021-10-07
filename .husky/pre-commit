@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# copy and add .env
+.bin/copy-env
+
+# lint files
+npx lint-staged

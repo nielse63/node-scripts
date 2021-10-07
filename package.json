@@ -1,0 +1,65 @@
+{
+  "name": "node-template",
+  "version": "1.0.0",
+  "description": "Barebones repo template for node.js apps",
+  "main": "index.js",
+  "scripts": {
+    "presetup": "cd .bin/cli && npm ci --prod",
+    "setup": "node .bin/cli/setup.js",
+    "postsetup": "npm ci",
+    "test": "jest",
+    "lint": "eslint --fix . && prettier --write .",
+    "start": "node index.js",
+    "release": "dotenv release-it",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-template.git"
+  },
+  "keywords": [
+    "node",
+    "template",
+    "github-template"
+  ],
+  "author": {
+    "name": "Erik Nielsen",
+    "email": "erik@312development.com"
+  },
+  "license": "Apache License 2.0",
+  "bugs": {
+    "url": "https://github.com/nielse63/node-template/issues"
+  },
+  "homepage": "https://github.com/nielse63/node-template#readme",
+  "engines": {
+    "node": ">=14",
+    "npm": ">=6"
+  },
+  "dependencies": {
+    "dotenv": "^10.0.0",
+    "signale": "^1.4.0"
+  },
+  "devDependencies": {
+    "dotenv-cli": "^4.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-jest": "^24.5.2",
+    "fs-extra": "^10.0.0",
+    "husky": "^7.0.2",
+    "jest": "^27.2.4",
+    "lint-staged": "^11.2.0",
+    "prettier": "^2.4.1",
+    "release-it": "^14.11.6"
+  },
+  "lint-staged": {
+    "*.js": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,yml,html}": [
+      "prettier --write"
+    ]
+  }
+}

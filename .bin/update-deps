@@ -1,0 +1,34 @@
+#!/usr/bin/env node
+const log = require('signale');
+const pkg = require('../package.json');
+const exec = require('./helpers/exec');
+
+const getDependenciesCmd = () => {
+  const keys = Object.keys(pkg.dependencies);
+  const cmdString = keys.map((key) => `${key}@latest`).join(' ');
+  return `npm i --save ${cmdString}`;
+};
+
+const getDevDependenciesCmd = () => {
+  const keys = Object.keys(pkg.devDependencies);
+  const cmdString = keys.map((key) => `${key}@latest`).join(' ');
+  return `npm i --save-dev ${cmdString}`;
+};
+
+const main = async () => {
+  const dependenciesCmd = getDependenciesCmd();
+  const devDependenciesCmd = getDevDependenciesCmd();
+  log.info('Installing dependencies');
+  await exec(dependenciesCmd);
+  log.info('Installing dev dependencies');
+  await exec(devDependenciesCmd);
+};
+
+main()
+  .then(() => {
+    log.success('Dependencies updated');
+  })
+  .catch((error) => {
+    log.error(error);
+    process.exit(1);
+  });

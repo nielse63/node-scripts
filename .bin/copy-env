@@ -1,0 +1,49 @@
+#!/usr/bin/env node
+const path = require('path');
+const fs = require('fs-extra');
+const log = require('signale');
+const paths = require('./helpers/paths');
+const cache = require('./helpers/cache');
+const exec = require('./helpers/exec');
+
+const envPath = path.join(paths.ROOT, '.env');
+const envSamplePath = path.join(paths.ROOT, '.env.sample');
+
+const formatEnv = async () => {
+  const content = await fs.readFile(envPath, 'utf8');
+  const newContent = content.replace(/'/g, '"');
+  await fs.writeFile(envPath, newContent, 'utf8');
+  return newContent;
+};
+
+const copyEnv = async (content) => {
+  const newContent = content.replace(/"(.*?)"/g, '""');
+  await fs.writeFile(envSamplePath, newContent, 'utf8');
+  await exec('git add .env.sample');
+};
+
+const didFileChange = async () => {
+  const cacheFile = await cache.create('.env');
+  const cacheValue = (await fs.readFile(cacheFile, 'utf8')).trim();
+  if (!cacheValue) {
+    return true;
+  }
+  const content = (await fs.readFile(envPath, 'utf8')).trim();
+  return content !== cacheValue;
+};
+
+const writeToCache = async (content) => {
+  await cache.write('.env', content);
+};
+
+const main = async () => {
+  if (!fs.existsSync(envPath)) return;
+  const shouldCopyEnv = await didFileChange();
+  if (!shouldCopyEnv) return;
+  const content = await formatEnv();
+  await copyEnv(content);
+  await writeToCache(content);
+  log.success('.env updated');
+};
+
+main().catch(log.error);
