@@ -7,7 +7,9 @@ const paths = require('./helpers/paths');
 const exec = require('./helpers/exec');
 
 const createTestTemplate = (classname) => {
-  const imnportName = _.camelCase(classname);
+  const imnportName = classname.includes('-')
+    ? _.camelCase(classname)
+    : classname;
   return `import ${imnportName} from '../${classname}';
 
 describe('${classname}', () => {
@@ -22,7 +24,12 @@ const main = async () => {
   const string = await exec(
     `find ${paths.packages} -type f -name '*.js' -or -name '*.ts' ! -path "**/node_modules/**" ! -path "**/dist/**" ! -name '*.spec.*' ! -name '*.test.*'`
   );
-  const files = string.split('\n');
+  const files = string.split('\n').filter((file) => {
+    if (file.includes('/node_modules/') || file.includes('/dist/')) {
+      return false;
+    }
+    return true;
+  });
   files
     .map((file) => {
       const basename = path.basename(file);
@@ -36,7 +43,10 @@ const main = async () => {
         .replace(extrgx, `.spec${extension}`);
       return { file, testpath, basename, classname };
     })
-    .filter(({ testpath }) => !fs.existsSync(testpath))
+    .filter(
+      ({ testpath, classname }) =>
+        !fs.existsSync(testpath) && classname !== 'index'
+    )
     .forEach(async ({ classname, testpath }) => {
       const template = createTestTemplate(classname);
       await fs.ensureFile(testpath);
