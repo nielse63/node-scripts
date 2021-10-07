@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+const path = require('path');
+const log = require('signale');
+const { program } = require('commander');
+const { version } = require('../package.json');
+const generateTests = require('../dist/generate-tests').default;
+
+program.version(version);
+program.argument('[path]', 'Path to the directory to create test files', '.');
+program.parse();
+
+const cwd = path.resolve(process.cwd(), program.processedArgs[0]);
+
+generateTests(cwd).catch(log.error);

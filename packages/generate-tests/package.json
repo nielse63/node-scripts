@@ -1,19 +1,19 @@
 {
-  "name": "@nielse63/copy-env",
+  "name": "@nielse63/generate-tests",
   "version": "0.0.1-alpha.0",
-  "description": "Format and copy .env files to env.sample to keep up to date",
+  "description": "Automatically generate jest specs for uncovered source files",
   "keywords": [
-    "env",
-    "envlint",
+    "jest",
+    "generator",
     "node-scripts"
   ],
   "author": "Erik Nielsen <erik@312development.com>",
-  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/copy-env#readme",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/generate-tests#readme",
   "license": "ISC",
-  "main": "dist/copy-env.js",
-  "module": "src/copy-env.js",
+  "main": "dist/generate-tests.js",
+  "module": "src/generate-tests.js",
   "bin": {
-    "copy-env": "bin/copy-env"
+    "generate-tests": "bin/generate-tests"
   },
   "directories": {
     "lib": "dist",
@@ -37,6 +37,7 @@
     "@nielse63/helpers": "file:../helpers",
     "commander": "^8.2.0",
     "fs-extra": "^10.0.0",
+    "lodash": "^4.17.21",
     "signale": "^1.4.0"
   },
   "bugs": {

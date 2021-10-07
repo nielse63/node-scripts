@@ -33,7 +33,7 @@ const writeToCache = async (content) => {
   await cache.write('.env', content);
 };
 
-export default async (cwd) => {
+export default async (cwd = process.cwd()) => {
   envPath = path.join(cwd, '.env');
   envSamplePath = path.join(cwd, '.env.sample');
 
