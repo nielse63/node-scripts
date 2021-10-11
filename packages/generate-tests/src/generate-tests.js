@@ -1,13 +1,12 @@
-#!/usr/bin/env node
 import fs from 'fs-extra';
 import log from 'signale';
 import path from 'path';
-import _ from 'lodash';
+import camelCase from 'lodash/camelCase';
 import fg from 'fast-glob';
 
 const createTestTemplate = (classname) => {
   const imnportName = classname.includes('-')
-    ? _.camelCase(classname)
+    ? camelCase(classname)
     : classname;
   return `import ${imnportName} from '../${classname}';
 
@@ -19,8 +18,44 @@ describe('${classname}', () => {
 `;
 };
 
-export default async (cwd = process.cwd()) => {
-  const files = await fg(['**/*.js', '**/*.ts'], {
+const createFileObjects = (files, cwd) =>
+  files
+    .map((file) => {
+      const abspath = path.resolve(cwd, file);
+      const basename = path.basename(abspath);
+      const dirname = path.dirname(abspath);
+      const extension = path.extname(abspath);
+      const extrgx = new RegExp(`${extension}$`);
+      const classname = basename.replace(extrgx, '');
+
+      const testpath = path
+        .join(dirname, '__tests__', basename)
+        .replace(extrgx, `.spec${extension}`);
+      return { file, abspath, testpath, basename, classname };
+    })
+    .filter(
+      ({ testpath, classname }) =>
+        !fs.existsSync(testpath) && classname !== 'index'
+    );
+
+const ensureFiles = async (fileObjects) => {
+  const promises = fileObjects.map(async ({ testpath }) =>
+    fs.ensureFile(testpath)
+  );
+  await Promise.all(promises);
+};
+
+const writeFiles = async (fileObjects) => {
+  const promises = fileObjects.map(async ({ classname, testpath }) => {
+    const template = createTestTemplate(classname);
+    return fs.writeFile(testpath, template, 'utf8');
+  });
+  await Promise.all(promises);
+};
+
+export default async (cwd = process.cwd(), glob = '**/src/**.{js,ts}') => {
+  // find files using glob patters
+  const files = await fg([glob], {
     cwd,
     ignore: [
       '**/node_modules/**',
@@ -28,31 +63,15 @@ export default async (cwd = process.cwd()) => {
       '**/*.test.*',
       '**/dist/**',
       '**/coverage/**',
+      '**/__tests__/**',
+      '**/__mocks__/**',
+      '**/*.config.js',
     ],
   });
-  files
-    .map((file) => path.resolve(cwd, file))
-    .map((file) => {
-      const basename = path.basename(file);
-      const dirname = path.dirname(file);
-      const extension = path.extname(file);
-      const extrgx = new RegExp(`${extension}$`);
-      const classname = basename.replace(extrgx, '');
 
-      const testpath = path
-        .join(dirname, '__tests__', basename)
-        .replace(extrgx, `.spec${extension}`);
-      console.log({ file, testpath, basename, classname });
-      return { file, testpath, basename, classname };
-    })
-    .filter(
-      ({ testpath, classname }) =>
-        !fs.existsSync(testpath) && classname !== 'index'
-    )
-    .forEach(async ({ classname, testpath }) => {
-      const template = createTestTemplate(classname);
-      await fs.ensureFile(testpath);
-      await fs.writeFile(testpath, template, 'utf8');
-      log.success(`Created ${path.relative(cwd, testpath)}`);
-    });
+  const fileObjects = createFileObjects(files, cwd);
+
+  await ensureFiles(fileObjects);
+  await writeFiles(fileObjects);
+  log.success('Generated test files');
 };
