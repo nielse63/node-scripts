@@ -23,7 +23,8 @@
     "url": "git+https://github.com/nielse63/node-scripts.git"
   },
   "scripts": {
-    "test": "echo \"Error: run tests from root\" && exit 1"
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "build": "NODE_ENV=production BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments --config-file ../../babel.config.js"
   },
   "dependencies": {
     "commander": "^8.2.0",

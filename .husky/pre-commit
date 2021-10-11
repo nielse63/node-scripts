@@ -1,11 +1,5 @@
 #!/bin/sh
 . "$(dirname "$0")/_/husky.sh"
 
-# build new dist files
-npm run build
-
-# copy and add .env
-packages/copy-env/bin/copy-env
-
 # lint files
 npx lint-staged

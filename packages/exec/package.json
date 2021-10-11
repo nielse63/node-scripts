@@ -1,17 +1,20 @@
 {
-  "name": "@nielse63/helpers",
+  "name": "@nielse63/exec",
   "version": "0.0.1",
-  "description": "Internal help modules",
+  "description": "Run child process asynchronously",
   "keywords": [
     "utils",
-    "helpers",
+    "exec",
     "node-scripts"
   ],
   "author": "Erik Nielsen <erik@312development.com>",
-  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/helpers#readme",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/exec#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "module": "src/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -21,7 +24,8 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "NODE_ENV=production BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments --config-file ../../babel.config.js"
+    "build:declarations": "tsc --project tsconfig.build.json",
+    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --source-maps --extensions .ts --delete-dir-on-start --no-comments --config-file ../../babel.config.js"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
