@@ -1,13 +1,6 @@
 module.exports = {
   root: true,
-  plugins: ['jest'],
-  extends: [
-    'airbnb-base',
-    'prettier',
-    'plugin:jest/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:import/typescript',
-  ],
+  extends: ['airbnb-base', 'prettier'],
   overrides: [
     {
       files: ['.bin/**/*', '__tests__/**/*'],
@@ -16,9 +9,18 @@ module.exports = {
       },
     },
     {
+      files: ['__tests__/**/*'],
+      plugins: ['jest'],
+      extends: ['plugin:jest/recommended'],
+    },
+    {
       files: ['**/*.ts'],
       parser: '@typescript-eslint/parser',
       plugins: ['@typescript-eslint'],
+      extends: [
+        'plugin:@typescript-eslint/recommended',
+        'plugin:import/typescript',
+      ],
     },
   ],
 };
