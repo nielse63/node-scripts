@@ -11,7 +11,7 @@
     "release": "lerna publish",
     "prepare": "husky install",
     "build": "lerna exec --parallel 'npm run build'",
-    "postbuild": "lerna exec --no-bail --parallel 'npm run build:declarations'"
+    "postbuild": "cd packages/exec && npm run build:declarations"
   },
   "repository": {
     "type": "git",
