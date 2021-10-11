@@ -3,7 +3,7 @@ import fs from 'fs-extra';
 import log from 'signale';
 import path from 'path';
 import _ from 'lodash';
-import { paths, exec } from '@nielse63/helpers';
+import fg from 'fast-glob';
 
 const createTestTemplate = (classname) => {
   const imnportName = classname.includes('-')
@@ -20,21 +20,18 @@ describe('${classname}', () => {
 };
 
 export default async (cwd = process.cwd()) => {
-  const string = await exec(
-    `find ${cwd} -type f -name '*.js' -or -name '*.ts' ! -path "**/node_modules/**" ! -path "**/dist/**" ! -name '*.spec.*' ! -name '*.test.*'`
-  );
-  const files = string.split('\n').filter((file) => {
-    if (
-      file.includes('/node_modules/') ||
-      file.includes('/dist/') ||
-      file.includes('.spec.') ||
-      file.includes('.test.')
-    ) {
-      return false;
-    }
-    return true;
+  const files = await fg(['**/*.js', '**/*.ts'], {
+    cwd,
+    ignore: [
+      '**/node_modules/**',
+      '**/*.spec.*',
+      '**/*.test.*',
+      '**/dist/**',
+      '**/coverage/**',
+    ],
   });
   files
+    .map((file) => path.resolve(cwd, file))
     .map((file) => {
       const basename = path.basename(file);
       const dirname = path.dirname(file);
@@ -45,6 +42,7 @@ export default async (cwd = process.cwd()) => {
       const testpath = path
         .join(dirname, '__tests__', basename)
         .replace(extrgx, `.spec${extension}`);
+      console.log({ file, testpath, basename, classname });
       return { file, testpath, basename, classname };
     })
     .filter(
@@ -55,6 +53,6 @@ export default async (cwd = process.cwd()) => {
       const template = createTestTemplate(classname);
       await fs.ensureFile(testpath);
       await fs.writeFile(testpath, template, 'utf8');
-      log.success(`Created ${path.relative(paths.ROOT, testpath)}`);
+      log.success(`Created ${path.relative(cwd, testpath)}`);
     });
 };
