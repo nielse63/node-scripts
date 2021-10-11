@@ -1,37 +1,36 @@
-## Welcome to GitHub Pages
+# node-scripts
 
-You can use the [editor on GitHub](https://github.com/nielse63/node-scripts/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+[![node](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml/badge.svg)](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml) [![Depfu](https://badges.depfu.com/badges/ce55d940ee2d41c9b1135b6b621bb6f3/overview.svg)](https://depfu.com/github/nielse63/node-scripts?project_id=32366) [![codecov](https://codecov.io/gh/nielse63/node-scripts/branch/main/graph/badge.svg?token=MENKEMT7YA)](https://codecov.io/gh/nielse63/node-scripts)
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
+> Collection of useful node scripts and utilities
 
-### Markdown
+## Packages
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+- [@nielse63/helpers](./packages/helpers/)
+- [@nielse63/copy-env](./packages/copy-env/)
+- [@nielse63/generate-tests](./packages/generate-tests/)
 
-```markdown
-Syntax highlighted code block
+## Usage
 
-# Header 1
-## Header 2
-### Header 3
+Install the individual package or packages you want to use in your project. See the packages for individual usage and documentation.
 
-- Bulleted
-- List
+## Development
 
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
+```
+git clone https://github.com/nielse63/node-scripts.git
+cd node-scripts
+nvm use
+npm ci
 ```
 
-For more details see [GitHub Flavored Markdown](https://guides.github.com/features/mastering-markdown/).
+After making desired changes and writing the required tests:
 
-### Jekyll Themes
+```
+npm run build
+npm run lint
+npm test
+```
 
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/nielse63/node-scripts/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
+The commit and push the changes to your branch and open a new pull request.
 
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+## Roadmap
