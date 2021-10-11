@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "incremental": true,
+    "target": "es5",
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "removeComments": true,
+    "rootDir": "./",
+    "baseUrl": "./",
+    "strict": true,
+    "noEmit": true,
+    "moduleResolution": "node",
+    "esModuleInterop": true,
+    "paths": {
+      "*": ["node_modules", "packages"]
+    }
+  },
+  "include": ["packages/exec"],
+  "exclude": ["node_modules", "__tests__", "__mocks__", "dist"]
+}
