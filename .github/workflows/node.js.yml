@@ -32,3 +32,8 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm test -- --coverage
+      - name: Codecov
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+          flags: unittests
