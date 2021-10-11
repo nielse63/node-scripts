@@ -1,0 +1,13 @@
+#!/usr/bin/env bash
+set -e
+
+cd "$(dirname "$(dirname "$0")")"
+
+root=$(pwd)
+items=$(find "$root/packages" \( -name node_modules -or -name package-lock.json \))
+
+for item in $items
+do
+  rm -rf "$item"
+done
+rm -rf "$root/node_modules" "$root/package-lock.json"

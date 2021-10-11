@@ -4,6 +4,11 @@ import path from 'path';
 import camelCase from 'lodash/camelCase';
 import fg from 'fast-glob';
 
+const debug = (string) => {
+  if (!process.env.DEBUG) return;
+  log.debug(string);
+};
+
 const createTestTemplate = (classname) => {
   const imnportName = classname.includes('-')
     ? camelCase(classname)
@@ -53,7 +58,18 @@ const writeFiles = async (fileObjects) => {
   await Promise.all(promises);
 };
 
-export default async (cwd = process.cwd(), glob = '**/src/**.{js,ts}') => {
+export default async (
+  cwd = process.cwd(),
+  glob = '**/src/**.{js,ts}',
+  options = {}
+) => {
+  // define config object
+  const config = { ...options };
+  if (options.debug) {
+    config.quiet = false;
+    process.env.DEBUG = true;
+  }
+
   // find files using glob patters
   const files = await fg([glob], {
     cwd,
@@ -69,9 +85,17 @@ export default async (cwd = process.cwd(), glob = '**/src/**.{js,ts}') => {
     ],
   });
 
+  debug(`files: \n  ${files.join('  \n')}`);
   const fileObjects = createFileObjects(files, cwd);
+  if (!fileObjects.length) {
+    if (!config.quiet) log.info('No tests to generate');
+    return;
+  }
+  debug(`fileObjects: \n  ${fileObjects.join('  \n')}`);
 
   await ensureFiles(fileObjects);
   await writeFiles(fileObjects);
-  log.success('Generated test files');
+  if (!config.quiet) {
+    log.success('Generated test files');
+  }
 };

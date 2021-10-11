@@ -10,7 +10,7 @@
     "prerelease": "npm run build",
     "release": "lerna publish",
     "prepare": "husky install",
-    "build": "lerna exec --parallel 'BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments'"
+    "build": "lerna exec --parallel 'NODE_ENV=production BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments'"
   },
   "repository": {
     "type": "git",
@@ -43,13 +43,13 @@
     "eslint-config-airbnb-base": "^14.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.24.2",
-    "eslint-plugin-jest": "^24.5.2",
+    "eslint-plugin-jest": "^25.0.1",
     "fs-extra": "^10.0.0",
     "husky": "^7.0.2",
     "jest": "^27.2.5",
     "jest-extended": "^0.11.5",
     "lerna": "^4.0.0",
-    "lint-staged": "^11.2.0",
+    "lint-staged": "^11.2.3",
     "lodash": "^4.17.21",
     "prettier": "^2.4.1",
     "signale": "^1.4.0"

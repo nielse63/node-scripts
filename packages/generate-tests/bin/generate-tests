@@ -1,13 +1,18 @@
 #!/usr/bin/env node
 const log = require('signale');
 const { program } = require('commander');
-const { version } = require('../package.json');
+const pkg = require('../package.json');
 const generateTests = require('../dist/generate-tests').default;
 
-program.version(version);
-program.argument('[glob]', 'Glob patterns to src files', '**/src/**.{js,ts}');
-program.parse();
+program
+  .option('-q, --quiet', 'Disable console output', false)
+  .option('--debug', 'Print debug output', false)
+  .argument('[files]', 'Glob pattern to src files', '**/src/**.{js,ts}')
+  .description(pkg.description)
+  .version(pkg.version)
+  .parse(process.argv);
 
 const [glob] = program.processedArgs;
+const options = program.opts();
 
-generateTests(process.cwd(), glob).catch(log.error);
+generateTests(process.cwd(), glob, options).catch(log.error);
