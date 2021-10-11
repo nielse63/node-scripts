@@ -1,6 +1,6 @@
 # node-scripts
 
-[![node](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml/badge.svg)](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml) ![David](https://img.shields.io/david/nielse63/node-scripts) [![codecov](https://codecov.io/gh/nielse63/node-scripts/branch/main/graph/badge.svg?token=MENKEMT7YA)](https://codecov.io/gh/nielse63/node-scripts)
+[![node](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml/badge.svg)](https://github.com/nielse63/node-scripts/actions/workflows/node.js.yml) [![Depfu](https://badges.depfu.com/badges/ce55d940ee2d41c9b1135b6b621bb6f3/overview.svg)](https://depfu.com/github/nielse63/node-scripts?project_id=32366) [![codecov](https://codecov.io/gh/nielse63/node-scripts/branch/main/graph/badge.svg?token=MENKEMT7YA)](https://codecov.io/gh/nielse63/node-scripts)
 
 > Collection of useful node scripts and utilities
 
