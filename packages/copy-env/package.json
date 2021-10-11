@@ -15,14 +15,6 @@
   "bin": {
     "copy-env": "bin/copy-env"
   },
-  "directories": {
-    "lib": "dist",
-    "test": "__tests__"
-  },
-  "files": [
-    "bin",
-    "dist"
-  ],
   "publishConfig": {
     "access": "public"
   },
@@ -34,7 +26,6 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@nielse63/helpers": "file:../helpers",
     "commander": "^8.2.0",
     "fs-extra": "^10.0.0",
     "signale": "^1.4.0"
