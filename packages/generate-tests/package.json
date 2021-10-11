@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/generate-tests",
-  "version": "0.0.1-alpha.0",
+  "version": "0.0.1",
   "description": "Automatically generate jest specs for uncovered source files",
   "keywords": [
     "jest",
