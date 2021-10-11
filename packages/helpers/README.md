@@ -1,11 +1,17 @@
 # `@nielse63/helpers`
 
-> TODO: description
+> Internal help modules
+
+## Installation
+
+```bash
+npm install --save @nielse63/helpers
+```
 
 ## Usage
 
-```
-import helpers from '@nielse63/helpers';
+```js
+import { cache, exec, paths } from '@nielse63/helpers';
 
 // TODO: DEMONSTRATE API
 ```
