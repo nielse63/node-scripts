@@ -11,3 +11,6 @@ do
   rm -rf "$item"
 done
 rm -rf "$root/node_modules" "$root/package-lock.json"
+npm install
+npx lerna boostrap --hoist
+npx lerna link
