@@ -62,11 +62,6 @@ describe('copy-env', () => {
       const sampleContent = await fs.readFile(envsamplefile, 'utf8');
       expect(sampleContent).toEqual(`ENV_VAR="123"`);
     });
-
-    // it('should print to console', async () => {
-    //   await copyEnv(testdir, { print: true });
-    //   expect(log.success).toHaveBeenCalledWith('.env updated');
-    // });
   });
 
   describe('cli', () => {
