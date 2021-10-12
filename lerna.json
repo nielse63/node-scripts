@@ -4,6 +4,9 @@
   "command": {
     "publish": {
       "message": "chore(release): publish"
+    },
+    "bootstrap": {
+      "npmClientArgs": ["--save-exact"]
     }
   }
 }

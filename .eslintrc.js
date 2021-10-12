@@ -19,12 +19,16 @@ module.exports = {
         tsx: 'never',
       },
     ],
+    'no-console': ['error', { allow: ['error'] }],
   },
   overrides: [
     {
-      files: ['.bin/**/*', '__tests__/**/*'],
+      files: ['.bin/**/*', '**/*.spec.{js,ts}'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
+        'no-underscore-dangle': 'off',
+        'no-console': 'off',
+        '@typescript-eslint/no-var-requires': 'warn',
       },
     },
     {

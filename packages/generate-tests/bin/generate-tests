@@ -1,8 +1,7 @@
 #!/usr/bin/env node
-const log = require('signale');
 const { program } = require('commander');
 const pkg = require('../package.json');
-const { generateTests } = require('../dist/generate-tests');
+const generateTests = require('../dist/generate-tests').default;
 
 program
   .option('-q, --quiet', 'Disable console output', false)
@@ -15,4 +14,4 @@ program
 const [glob] = program.processedArgs;
 const options = program.opts();
 
-generateTests(process.cwd(), glob, options).catch(log.error);
+generateTests(process.cwd(), glob, options).catch(console.error);
