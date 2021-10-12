@@ -21,11 +21,7 @@ const exec = async (cmd = ''): Promise<string> => {
 describe('generate-tests', () => {
   let cwd;
   beforeAll(() => {
-    cwd = process.cwd();
-  });
-
-  afterAll(() => {
-    process.chdir(cwd);
+    cwd = process.env.JEST_STARTING_PWD || process.cwd();
   });
 
   beforeEach(async () => {
@@ -38,6 +34,7 @@ describe('generate-tests', () => {
   });
 
   afterEach(async () => {
+    process.chdir(cwd);
     await fs.remove(root);
   });
 
