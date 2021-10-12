@@ -4,12 +4,30 @@ import path from 'path';
 import camelCase from 'lodash/camelCase';
 import fg from 'fast-glob';
 
-const debug = (string) => {
+interface FileObject {
+  file: string;
+  abspath: string;
+  testpath: string;
+  basename: string;
+  classname: string;
+}
+
+interface Config {
+  quiet?: boolean;
+  debug?: boolean;
+}
+
+const defaults: Config = {
+  quiet: false,
+  debug: false,
+};
+
+const debug = (string: string) => {
   if (!process.env.DEBUG) return;
   log.debug(string);
 };
 
-const createTestTemplate = (classname) => {
+const createTestTemplate = (classname: string) => {
   const imnportName = classname.includes('-')
     ? camelCase(classname)
     : classname;
@@ -23,7 +41,7 @@ describe('${classname}', () => {
 `;
 };
 
-const createFileObjects = (files, cwd) =>
+const createFileObjects = (files: string[], cwd: string) =>
   files
     .map((file) => {
       const abspath = path.resolve(cwd, file);
@@ -43,14 +61,14 @@ const createFileObjects = (files, cwd) =>
         !fs.existsSync(testpath) && classname !== 'index'
     );
 
-const ensureFiles = async (fileObjects) => {
+const ensureFiles = async (fileObjects: FileObject[]) => {
   const promises = fileObjects.map(async ({ testpath }) =>
     fs.ensureFile(testpath)
   );
   await Promise.all(promises);
 };
 
-const writeFiles = async (fileObjects) => {
+const writeFiles = async (fileObjects: FileObject[]) => {
   const promises = fileObjects.map(async ({ classname, testpath }) => {
     const template = createTestTemplate(classname);
     return fs.writeFile(testpath, template, 'utf8');
@@ -58,16 +76,26 @@ const writeFiles = async (fileObjects) => {
   await Promise.all(promises);
 };
 
-export default async (
-  cwd = process.cwd(),
+/**
+ *
+ * @param cwd Path to project root (default: .)
+ * @param glob Glob pattern to src files
+ * @param options Options object
+ * @returns
+ */
+export const generateTests = async (
+  cwd: string = process.cwd(),
   glob = '**/src/**.{js,ts}',
-  options = {}
-) => {
+  options: Config = {}
+): Promise<FileObject[]> => {
   // define config object
-  const config = { ...options };
-  if (options.debug) {
+  const config: Config = {
+    ...defaults,
+    ...options,
+  };
+  if (config.debug) {
     config.quiet = false;
-    process.env.DEBUG = true;
+    process.env.DEBUG = 'true';
   }
 
   // find files using glob patters
@@ -89,7 +117,7 @@ export default async (
   const fileObjects = createFileObjects(files, cwd);
   if (!fileObjects.length) {
     if (!config.quiet) log.info('No tests to generate');
-    return;
+    return [];
   }
   debug(`fileObjects: \n  ${fileObjects.join('  \n')}`);
 
@@ -98,4 +126,8 @@ export default async (
   if (!config.quiet) {
     log.success('Generated test files');
   }
+
+  return fileObjects;
 };
+
+export default generateTests;

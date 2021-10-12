@@ -11,7 +11,12 @@
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/generate-tests#readme",
   "license": "ISC",
   "main": "dist/generate-tests.js",
-  "module": "src/generate-tests.js",
+  "module": "dist/generate-tests.js",
+  "types": "dist/generate-tests.d.ts",
+  "files": [
+    "bin",
+    "dist"
+  ],
   "bin": {
     "generate-tests": "bin/generate-tests"
   },
@@ -24,16 +29,22 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "NODE_ENV=production BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments --config-file ../../babel.config.js"
+    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --extensions .ts,.js --delete-dir-on-start --no-comments",
+    "build:types": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
-    "commander": "^8.2.0",
-    "fast-glob": "^3.2.7",
-    "fs-extra": "^10.0.0",
-    "lodash": "^4.17.21",
-    "signale": "^1.4.0"
+    "commander": "8.2.0",
+    "fast-glob": "3.2.7",
+    "fs-extra": "10.0.0",
+    "lodash": "4.17.21",
+    "signale": "1.4.0"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "9.0.13",
+    "@types/lodash": "4.14.175",
+    "@types/signale": "1.4.2"
   }
 }

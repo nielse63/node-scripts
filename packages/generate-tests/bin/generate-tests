@@ -2,7 +2,7 @@
 const log = require('signale');
 const { program } = require('commander');
 const pkg = require('../package.json');
-const generateTests = require('../dist/generate-tests').default;
+const { generateTests } = require('../dist/generate-tests');
 
 program
   .option('-q, --quiet', 'Disable console output', false)

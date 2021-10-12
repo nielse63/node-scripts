@@ -2,6 +2,16 @@ import path from 'path';
 import fs from 'fs-extra';
 import log from 'signale';
 
+interface Config {
+  quiet?: boolean;
+  debug?: boolean;
+}
+
+const defaults: Config = {
+  quiet: false,
+  debug: false,
+};
+
 const formatEnv = async (filepath) => {
   const content = await fs.readFile(filepath, 'utf8');
   const newContent = content.replace(/'/g, '"');
@@ -14,12 +24,18 @@ const debug = (string) => {
   log.debug(string);
 };
 
-export default async (cwd = process.cwd(), options = {}) => {
+export default async (
+  cwd: string = process.cwd(),
+  options: Config = {}
+): Promise<string | null> => {
   // create options object with defaults
-  const config = { ...options };
+  const config: Config = {
+    ...defaults,
+    ...options,
+  };
   if (options.debug) {
     config.quiet = true;
-    process.env.DEBUG = true;
+    process.env.DEBUG = 'true';
   }
 
   // define shared variables
@@ -30,7 +46,7 @@ export default async (cwd = process.cwd(), options = {}) => {
 
   if (!fs.existsSync(envPath)) {
     debug('.env file not found - returning');
-    return;
+    return null;
   }
   debug(`formatting ${envPath}`);
   const content = await formatEnv(envPath);
@@ -39,4 +55,5 @@ export default async (cwd = process.cwd(), options = {}) => {
   if (!config.quiet) {
     log.success('.env updated');
   }
+  return envSamplePath;
 };

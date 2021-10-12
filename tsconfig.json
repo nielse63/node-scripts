@@ -1,21 +1,17 @@
 {
   "compilerOptions": {
-    "incremental": true,
-    "target": "es5",
-    "allowJs": true,
-    "checkJs": true,
-    "declaration": true,
-    "removeComments": true,
-    "rootDir": "./",
-    "baseUrl": "./",
-    "strict": true,
-    "noEmit": true,
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
     "esModuleInterop": true,
+    "removeComments": false,
+    "rootDir": ".",
+    "baseUrl": ".",
     "paths": {
+      "@nielse63/*": ["packages/*/src"],
       "*": ["node_modules", "packages"]
     }
   },
-  "include": ["packages/exec"],
+  "include": ["packages", "jest-dom/extend-expect"],
   "exclude": ["node_modules", "__tests__", "__mocks__", "dist"]
 }

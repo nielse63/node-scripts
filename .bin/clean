@@ -10,4 +10,7 @@ for item in $items
 do
   rm -rf "$item"
 done
-rm -rf "$root/node_modules" "$root/package-lock.json"
+rm -rf "$root/node_modules"
+npm ci
+npx lerna boostrap --hoist
+npx lerna link
