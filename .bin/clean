@@ -4,7 +4,8 @@ set -e
 cd "$(dirname "$(dirname "$0")")"
 
 root=$(pwd)
-items=$(find "$root/packages" \( -name node_modules -or -name package-lock.json \))
+# items=$(find "$root/packages" \( -name node_modules -or -name package-lock.json \))
+items=$(find "$root/packages" -name node_modules)
 
 for item in $items
 do
@@ -12,5 +13,5 @@ do
 done
 rm -rf "$root/node_modules"
 npm ci
-npx lerna boostrap --hoist
-npx lerna link
+# npx lerna bootsrap
+# npx lerna link
