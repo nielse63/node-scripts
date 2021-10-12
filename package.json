@@ -10,8 +10,8 @@
     "prerelease": "npm run build",
     "release": "lerna publish",
     "prepare": "husky install",
-    "build": "lerna exec --parallel 'npm run build'",
-    "postbuild": "cd packages/exec && npm run build:declarations"
+    "build": "lerna exec --parallel 'npm run build --if-present'",
+    "postbuild": "lerna exec --parallel 'npm run build:declarations --if-present'"
   },
   "repository": {
     "type": "git",
@@ -40,6 +40,7 @@
     "@babel/core": "^7.15.8",
     "@babel/preset-env": "^7.15.8",
     "@babel/preset-typescript": "^7.15.0",
+    "@tsconfig/node12": "^1.0.9",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.10.3",
     "@typescript-eslint/eslint-plugin": "^4.33.0",

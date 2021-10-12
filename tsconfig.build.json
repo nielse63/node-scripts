@@ -1,10 +1,12 @@
 {
   "extends": "./tsconfig.json",
   "compilerOptions": {
-    "noEmit": false,
-    // "emitDeclarationOnly": true,
-    "declaration": true
+    "emitDeclarationOnly": true,
+    "declaration": true,
+    "paths": {
+      "@nielse63/*": ["./node_modules/@nielse63/*/src"]
+    }
   },
-  "exclude": ["**/*.spec.*", "**/dist/**", "**/__tests__/**"],
+  "exclude": ["**/*.spec.*", "dist"],
   "include": []
 }

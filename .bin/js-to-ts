@@ -1,0 +1,68 @@
+#!/usr/bin/env node
+const exec = require('./helpers/exec');
+const paths = require('./helpers/paths');
+const fs = require('fs-extra');
+const path = require('path');
+
+const convertFiles = async () => {
+  const files = (
+    await exec('find packages -type f -path "**/src/**" -name "*.js"')
+  )
+    .split('\n')
+    .map((file) => {
+      return path.resolve(paths.ROOT, file);
+    })
+    .filter((file) => fs.existsSync(file));
+  files.forEach((file) => {
+    const newfile = file.replace(/.js$/, '.ts');
+    if (!fs.existsSync(newfile)) {
+      fs.moveSync(file, newfile);
+    }
+  });
+};
+
+const updatePackage = async () => {
+  const files = (
+    await exec('find packages -maxdepth 2 -type f -name "package.json"')
+  )
+    .split('\n')
+    .filter(Boolean)
+    .map((file) => {
+      return path.resolve(paths.ROOT, file);
+    })
+    .filter((file) => fs.existsSync(file));
+  const tsconfigContent = `{
+  "extends": "../../tsconfig.build.json",
+  "compilerOptions": {
+    "emitDeclarationOnly": true,
+    "skipLibCheck": true,
+    "declarationDir": "./dist",
+    "rootDir": "./src",
+    "baseUrl": "./"
+  },
+  "include": ["./src"]
+}
+  `;
+  files.forEach((file) => {
+    // update package.jsn
+    const json = fs.readJSONSync(file, 'utf8');
+    json.scripts.build =
+      'BABEL_ENV=build babel src --root-mode upward --out-dir dist --source-maps --extensions .ts --delete-dir-on-start --no-comments --config-file ../../babel.config.js';
+    json.scripts['build:declarations'] = 'tsc --project tsconfig.build.json';
+    fs.writeJSONSync(file, json, 'utf8');
+
+    // write tsconfig.build.json
+    const dirname = path.dirname(file);
+    const tsconfig = path.join(dirname, 'tsconfig.build.json');
+    if (!fs.existsSync(tsconfig)) {
+      fs.writeFileSync(tsconfig, tsconfigContent, 'utf8');
+    }
+  });
+};
+
+const main = async () => {
+  await convertFiles();
+  await updatePackage();
+};
+
+main().catch(console.error);

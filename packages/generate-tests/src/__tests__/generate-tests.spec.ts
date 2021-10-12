@@ -1,7 +1,7 @@
 import fs from 'fs-extra';
 import path from 'path';
 import os from 'os';
-import generateTests from '../generate-tests';
+import { generateTests } from '../generate-tests';
 
 const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
 const srcdir = path.join(root, 'src');
