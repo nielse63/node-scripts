@@ -5,8 +5,7 @@
   "scripts": {
     "postinstall": "lerna bootstrap && lerna link",
     "test": "jest --cache --coverage",
-    "lint": "eslint --fix . && prettier --write .",
-    "start": "node index.js",
+    "lint": "eslint --fix --cache . && prettier --write .",
     "prerelease": "npm run build",
     "release": "lerna publish",
     "prepare": "husky install",

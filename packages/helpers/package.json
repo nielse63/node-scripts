@@ -11,7 +11,11 @@
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/helpers#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "module": "src/index.js",
+  "module": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
   "publishConfig": {
     "access": "public"
   },
@@ -21,8 +25,8 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --source-maps --extensions .ts --delete-dir-on-start --no-comments --config-file ../../babel.config.js",
-    "build:declarations": "tsc --project tsconfig.build.json"
+    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --extensions .ts,.js --delete-dir-on-start --no-comments",
+    "build:types": "tsc --project tsconfig.build.json"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"

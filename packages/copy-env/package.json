@@ -11,7 +11,12 @@
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/copy-env#readme",
   "license": "ISC",
   "main": "dist/copy-env.js",
-  "module": "src/copy-env.js",
+  "module": "dist/copy-env.js",
+  "types": "dist/copy-env.d.ts",
+  "files": [
+    "bin",
+    "dist"
+  ],
   "bin": {
     "copy-env": "bin/copy-env"
   },

@@ -45,7 +45,7 @@ const updatePackage = async () => {
     json.scripts['build:types'] = 'tsc --project tsconfig.build.json';
     delete json.scripts['build:declarations'];
     fs.writeJSONSync(file, json, {
-      spaces: '2',
+      spaces: 2,
     });
 
     // write tsconfig.build.json
@@ -53,7 +53,7 @@ const updatePackage = async () => {
     const tsconfig = path.join(dirname, 'tsconfig.build.json');
     if (!fs.existsSync(tsconfig)) {
       fs.writeJsonSync(tsconfig, tsconfigContent, {
-        spaces: '2',
+        spaces: 2,
       });
     }
   });
