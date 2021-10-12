@@ -17,8 +17,16 @@ const exec = async (cmd = ''): Promise<string> => {
 };
 
 describe('copy-env', () => {
+  let cwd;
+  beforeAll(() => {
+    cwd = process.cwd();
+  });
+
+  afterAll(() => {
+    process.chdir(cwd);
+  });
+
   beforeEach(async () => {
-    // await fs.remove(testdir);
     await fs.ensureDir(testdir);
     await fs.ensureFile(packagejson);
     await fs.writeJSON(packagejson, { name: 'test' }, { spaces: 2 });

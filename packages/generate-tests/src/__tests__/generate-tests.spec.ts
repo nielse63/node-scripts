@@ -19,6 +19,15 @@ const exec = async (cmd = ''): Promise<string> => {
 };
 
 describe('generate-tests', () => {
+  let cwd;
+  beforeAll(() => {
+    cwd = process.cwd();
+  });
+
+  afterAll(() => {
+    process.chdir(cwd);
+  });
+
   beforeEach(async () => {
     await fs.ensureDir(root);
     await fs.ensureDir(srcdir);

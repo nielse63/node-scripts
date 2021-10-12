@@ -6,11 +6,11 @@ const filename = 'test';
 const filecontent = 'content';
 
 describe('cache', () => {
-  beforeEach(async () => {
-    await fs.remove(paths.cache);
-  });
+  // beforeEach(async () => {
+  //   await fs.remove(paths.cache);
+  // });
 
-  afterAll(async () => {
+  afterEach(async () => {
     await fs.remove(paths.cache);
   });
 
