@@ -33,7 +33,7 @@
     "build:types": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
-    "@nielse63/helpers": "file:../helpers",
+    "@nielse63/helpers": "^0.0.2",
     "commander": "8.2.0",
     "fs-extra": "10.0.0"
   },
