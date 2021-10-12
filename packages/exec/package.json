@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/exec",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Run child process asynchronously",
   "keywords": [
     "utils",

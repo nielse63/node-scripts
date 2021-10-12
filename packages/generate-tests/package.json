@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/generate-tests",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Automatically generate jest specs for uncovered source files",
   "keywords": [
     "jest",
@@ -33,7 +33,7 @@
     "build:types": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
-    "@nielse63/helpers": "^0.0.2",
+    "@nielse63/helpers": "^0.0.3",
     "commander": "8.2.0",
     "fast-glob": "3.2.7",
     "fs-extra": "10.0.0",

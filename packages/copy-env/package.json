@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/copy-env",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Format and copy .env files to env.sample to keep up to date",
   "keywords": [
     "env",
@@ -33,7 +33,7 @@
     "build:types": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
-    "@nielse63/helpers": "^0.0.2",
+    "@nielse63/helpers": "^0.0.3",
     "commander": "8.2.0",
     "fs-extra": "10.0.0"
   },
