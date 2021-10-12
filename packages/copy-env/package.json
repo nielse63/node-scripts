@@ -24,7 +24,8 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "NODE_ENV=production BABEL_ENV=build babel src --out-dir dist --root-mode upward --delete-dir-on-start --no-comments --config-file ../../babel.config.js"
+    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --source-maps --extensions .ts --delete-dir-on-start --no-comments --config-file ../../babel.config.js",
+    "build:declarations": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "commander": "^8.2.0",
@@ -33,5 +34,9 @@
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^9.0.13",
+    "@types/signale": "^1.4.2"
   }
 }
