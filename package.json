@@ -6,8 +6,7 @@
     "postinstall": "lerna link",
     "test": "jest --cache --coverage",
     "lint": "eslint --fix --cache . && prettier --write .",
-    "prerelease": "npm run build",
-    "release": "lerna publish",
+    "release": ".bin/release",
     "prepare": "husky install",
     "build": "lerna exec --parallel 'npm run build --if-present'",
     "postbuild": "lerna exec --parallel 'npm run build:types --if-present'"
