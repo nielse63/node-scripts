@@ -24,8 +24,8 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --source-maps --extensions .ts --delete-dir-on-start --no-comments --config-file ../../babel.config.js",
-    "build:declarations": "tsc --project tsconfig.build.json"
+    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --extensions .ts,.js --delete-dir-on-start --no-comments",
+    "build:types": "tsc --project tsconfig.build.json"
   },
   "dependencies": {
     "commander": "^8.2.0",
