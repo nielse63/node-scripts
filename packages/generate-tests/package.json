@@ -44,6 +44,6 @@
   },
   "devDependencies": {
     "@types/fs-extra": "9.0.13",
-    "@types/lodash": "4.14.176"
+    "@types/lodash": "4.14.177"
   }
 }
