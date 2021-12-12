@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 set -e
 
+npx lerna bootstrap
 npx lerna link
 npm run build
-npm test
+npm run lint
+npm test -- --ignore-scripts
 npx lerna publish

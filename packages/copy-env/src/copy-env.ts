@@ -1,21 +1,34 @@
-import { Logger } from '@nielse63/helpers';
 import fs from 'fs-extra';
 import path from 'path';
+import log from 'signale';
 
-export class CopyEnv extends Logger {
+interface Options {
+  debug: boolean;
+}
+
+export class CopyEnv {
   envPath: string;
   envSamplePath: string;
+  options: Options;
 
   constructor(cwd: string, options = {}) {
-    super(options);
-
     this.envPath = path.join(cwd, '.env');
     this.envSamplePath = path.join(cwd, '.env.sample');
+    this.options = {
+      debug: false,
+      ...options,
+    };
+  }
+
+  debug(message = ''): void {
+    if (this.options.debug) {
+      log.debug(message);
+    }
   }
 
   async formatEnv(filepath: string): Promise<string> {
     if (!fs.existsSync(filepath)) {
-      this.error(`${filepath} does not exist`);
+      log.error(`${filepath} does not exist`);
       return '';
     }
     const content = await fs.readFile(filepath, 'utf8');
@@ -36,7 +49,7 @@ export class CopyEnv extends Logger {
     const content = await this.formatEnv(this.envPath);
     this.debug(`copying to ${this.envSamplePath}`);
     await fs.writeFile(this.envSamplePath, content, 'utf8');
-    this.success('.env updated');
+    log.success('.env updated');
     return this.envSamplePath;
   }
 }
