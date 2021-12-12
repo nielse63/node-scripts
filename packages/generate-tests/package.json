@@ -42,5 +42,8 @@
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.178"
   }
 }

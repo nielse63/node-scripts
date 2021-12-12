@@ -34,14 +34,11 @@
     "build": "tsc --project tsconfig.json"
   },
   "dependencies": {
-    "@nielse63/helpers": "^0.0.3",
+    "@nielse63/helpers": "file:../helpers",
     "commander": "^8.2.0",
     "fs-extra": "^10.0.0"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.13"
   }
 }

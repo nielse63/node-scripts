@@ -14,7 +14,7 @@
       "@nielse63/*": ["./node_modules/@nielse63/*/src"],
       "*": ["node_modules", "packages"]
     },
-    "types": ["jest", "node", "signale", "fs-extra", "lodash"]
+    "types": ["jest", "node", "signale", "fs-extra"]
   },
   "include": ["./packages/**/src/**/*.ts", "jest-dom/extend-expect"],
   "exclude": ["node_modules", "__tests__", "__mocks__", "dist", "**/*.spec.*"],

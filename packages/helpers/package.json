@@ -35,9 +35,5 @@
   "dependencies": {
     "fs-extra": "^10.0.0",
     "signale": "^1.4.0"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "^9.0.13",
-    "@types/signale": "^1.4.2"
   }
 }
