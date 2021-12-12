@@ -4,7 +4,6 @@
   "description": "Collection of useful node scripts and utilities",
   "scripts": {
     "postinstall": "lerna bootstrap && lerna link",
-    "pretest": "npm run build",
     "test": "jest --cache --coverage",
     "lint": "eslint --fix --cache . && prettier --write .",
     "release": ".bin/release",
