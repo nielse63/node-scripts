@@ -7,6 +7,9 @@ cd "$root"
 echo "lerna clean --yes"
 npx lerna clean --yes || :
 echo "rm -rf node_modules package-lock.json"
+if [ -d "$HOME/.Trash" ]; then
+  mv "$root/node_modules" "$HOME/.Trash/node_modules"
+fi
 rm -rf "$root/node_modules" "$root/package-lock.json"
 items=$(find "$root/packages" \( -name dist -or -name package-lock.json \))
 
