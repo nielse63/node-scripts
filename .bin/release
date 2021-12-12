@@ -3,6 +3,5 @@ set -e
 
 npx lerna link
 npm run build
-npm run lint
 npm test
 npx lerna publish

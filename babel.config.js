@@ -6,13 +6,7 @@ module.exports = (api) => {
       [
         '@babel/preset-env',
         {
-          // useBuiltIns: 'usage',
-          // corejs: 3,
           targets: 'maintained node versions',
-          // targets: {
-          //   // esmodules: true,
-          //   node: 'current',
-          // },
         },
       ],
       '@babel/preset-typescript',

@@ -1,10 +1,12 @@
 {
-  "extends": "../../tsconfig.build.json",
+  "extends": "../../tsconfig.json",
   "compilerOptions": {
     "skipLibCheck": true,
     "declarationDir": "./dist",
     "rootDir": "./src",
+    "outDir": "./dist",
     "baseUrl": "./"
   },
-  "include": ["./src"]
+  "include": ["./src"],
+  "files": ["../../global.d.ts"]
 }

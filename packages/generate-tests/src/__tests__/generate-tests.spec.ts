@@ -13,7 +13,7 @@ const testfile = path.join(srcdir, '__tests__/file.spec.js');
 const srccontent = `export default () => {}`;
 
 const exec = async (cmd = ''): Promise<string> => {
-  const binpath = path.resolve(__dirname, '../../bin/generate-tests');
+  const binpath = path.resolve(__dirname, '../../bin/generate-tests.js');
   const output = cp.execSync(`${binpath} ${cmd}`.trim()).toString();
   return Promise.resolve(output.trim());
 };

@@ -1,8 +1,8 @@
-import fs from 'fs-extra';
-import path from 'path';
-import camelCase from 'lodash/camelCase';
 import fg from 'fast-glob';
-import { Logger } from '@nielse63/helpers';
+import fs from 'fs-extra';
+import camelCase from 'lodash/camelCase';
+import path from 'path';
+import log from 'signale';
 
 interface FileObject {
   file: string;
@@ -12,19 +12,24 @@ interface FileObject {
   classname: string;
 }
 
-export class GenerateTests extends Logger {
+interface Options {
+  debug: boolean;
+}
+
+export class GenerateTests {
   cwd: string;
-
   glob: string;
-
   fileobjects: FileObject[];
+  options: Options;
 
   constructor(cwd: string, glob = '**/src/**.{js,ts}', options = {}) {
-    super(options);
-
     this.cwd = cwd;
     this.glob = glob;
     this.fileobjects = [];
+    this.options = {
+      debug: false,
+      ...options,
+    };
   }
 
   async run(): Promise<FileObject[]> {
@@ -32,8 +37,14 @@ export class GenerateTests extends Logger {
     this.fileobjects = this.createFileObjects(files);
     await this.ensureFiles();
     await this.writeFiles();
-    this.success('Generated test files');
+    log.success('Generated test files');
     return this.fileobjects;
+  }
+
+  debug(message = ''): void {
+    if (this.options.debug) {
+      log.debug(message);
+    }
   }
 
   async findFiles(): Promise<string[]> {

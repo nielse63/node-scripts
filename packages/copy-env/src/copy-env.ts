@@ -1,10 +1,9 @@
-import path from 'path';
-import fs from 'fs-extra';
 import { Logger } from '@nielse63/helpers';
+import fs from 'fs-extra';
+import path from 'path';
 
 export class CopyEnv extends Logger {
   envPath: string;
-
   envSamplePath: string;
 
   constructor(cwd: string, options = {}) {
@@ -17,7 +16,7 @@ export class CopyEnv extends Logger {
   async formatEnv(filepath: string): Promise<string> {
     if (!fs.existsSync(filepath)) {
       this.error(`${filepath} does not exist`);
-      return null;
+      return '';
     }
     const content = await fs.readFile(filepath, 'utf8');
     const newContent = content.replace(/'/g, '"');

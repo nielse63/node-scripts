@@ -11,7 +11,6 @@
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/exec#readme",
   "license": "ISC",
   "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist"
   ],
@@ -24,16 +23,18 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --extensions .ts,.js --delete-dir-on-start --no-comments",
-    "build:types": "tsc --project tsconfig.build.json"
+    "prepublishOnly": "npm run build",
+    "clean": "rm -rf dist/",
+    "prebuild": "npm run clean",
+    "build": "tsc --project tsconfig.json"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
   },
   "dependencies": {
-    "fs-extra": "10.0.0"
+    "fs-extra": "^10.0.0"
   },
   "devDependencies": {
-    "@types/fs-extra": "9.0.13"
+    "@types/fs-extra": "^9.0.13"
   }
 }

@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 set -e
 
-cd "$(dirname "$(dirname "$0")")"
+root="$(dirname "$(dirname "$0")")"
+cd "$root"
 
-root=$(pwd)
-# items=$(find "$root/packages" \( -name node_modules -or -name package-lock.json \))
-items=$(find "$root/packages" -name node_modules)
+echo "lerna clean --yes"
+npx lerna clean --yes || :
+echo "rm -rf node_modules package-lock.json"
+rm -rf "$root/node_modules" "$root/package-lock.json"
+items=$(find "$root/packages" \( -name dist -or -name package-lock.json \))
 
 for item in $items
 do
+  echo "rm -rf $item"
   rm -rf "$item"
 done
-rm -rf "$root/node_modules"
-npm ci
-# npx lerna bootsrap
-# npx lerna link
