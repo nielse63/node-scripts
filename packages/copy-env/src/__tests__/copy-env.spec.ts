@@ -1,9 +1,9 @@
-import fs from 'fs-extra';
-import path from 'path';
 import cp from 'child_process';
+import fs from 'fs-extra';
 import os from 'os';
-import copyEnv, { CopyEnv } from '../copy-env';
+import path from 'path';
 import pkg from '../../package.json';
+import copyEnv, { CopyEnv } from '../copy-env';
 
 const testdir = path.resolve(os.tmpdir(), 'node-script-tests/copy-env');
 const packagejson = path.join(testdir, 'package.json');
@@ -42,7 +42,7 @@ describe('copy-env', () => {
     it('should prevent formatting non-existing file', async () => {
       const object = new CopyEnv(testdir);
       const output = await object.formatEnv('/does/not/exist/.env');
-      expect(output).toBeNull();
+      expect(output).toEqual('');
     });
   });
 

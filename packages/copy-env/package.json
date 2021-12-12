@@ -12,7 +12,6 @@
   "license": "ISC",
   "main": "dist/copy-env.js",
   "module": "dist/copy-env.js",
-  "types": "dist/copy-env.d.ts",
   "files": [
     "bin",
     "dist"
@@ -29,18 +28,17 @@
   },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "build": "BABEL_ENV=build babel src --root-mode upward --out-dir dist --extensions .ts,.js --delete-dir-on-start --no-comments",
-    "build:types": "tsc --project tsconfig.build.json"
+    "prepublishOnly": "npm run build",
+    "clean": "rm -rf dist/",
+    "prebuild": "npm run clean",
+    "build": "tsc --project tsconfig.json"
   },
   "dependencies": {
-    "@nielse63/helpers": "^0.0.3",
-    "commander": "8.3.0",
-    "fs-extra": "10.0.0"
+    "commander": "^8.2.0",
+    "fs-extra": "^10.0.0",
+    "signale": "^1.4.0"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
-  },
-  "devDependencies": {
-    "@types/fs-extra": "9.0.13"
   }
 }

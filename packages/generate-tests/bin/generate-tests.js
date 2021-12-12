@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { program } = require('commander');
 const pkg = require('../package.json');
-const generateTests = require('../dist/generate-tests').default;
+const { default: generateTests } = require('../dist/generate-tests');
 
 program
   .option('-q, --quiet', 'Disable console output', false)

@@ -1,8 +1,8 @@
-import path from 'path';
 import fs from 'fs-extra';
 import os from 'os';
+import path from 'path';
 
-export const findRoot = (cwd = process.cwd()) => {
+export const findRoot = (cwd: string = process.cwd()): string => {
   const packageFile = path.resolve(cwd, 'package.json');
   if (fs.existsSync(packageFile)) {
     return cwd;

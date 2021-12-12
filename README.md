@@ -26,8 +26,8 @@ npm ci
 After making desired changes and writing the required tests:
 
 ```
-npm run build
 npm run lint
+npm run build
 npm test
 ```
 
