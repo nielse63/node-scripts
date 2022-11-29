@@ -35,7 +35,7 @@
   },
   "dependencies": {
     "commander": "^9.0.0",
-    "fs-extra": "^10.0.0",
+    "fs-extra": "^11.0.0",
     "signale": "^1.4.0"
   },
   "bugs": {
