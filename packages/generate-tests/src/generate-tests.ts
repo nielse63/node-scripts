@@ -108,14 +108,14 @@ export class GenerateTests {
   }
 
   static createTestTemplate(classname: string): string {
-    const imnportName = classname.includes('-')
+    const importName = classname.includes('-')
       ? camelCase(classname)
       : classname;
-    return `import ${imnportName} from '../${classname}';
+    return `import ${importName} from '../${classname}';
 
   describe('${classname}', () => {
     it('needs tests', () => {
-      expect(${imnportName}).toBeDefined();
+      expect(${importName}).toBeDefined();
     });
   });
   `;
