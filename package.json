@@ -29,8 +29,8 @@
   },
   "homepage": "https://github.com/nielse63/node-scripts#readme",
   "engines": {
-    "node": ">=14",
-    "npm": ">=6"
+    "node": ">=16",
+    "npm": ">=8"
   },
   "devDependencies": {
     "@babel/core": "^7.17.8",
