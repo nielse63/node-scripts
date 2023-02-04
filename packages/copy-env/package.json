@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/copy-env",
-  "version": "0.0.3",
+  "version": "0.0.4-alpha.0",
   "description": "Format and copy .env files to env.sample to keep up to date",
   "keywords": [
     "env",
