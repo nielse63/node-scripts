@@ -1,55 +1,62 @@
-import log from 'signale';
+import signale, { Signale } from 'signale';
 
 interface Config {
   quiet?: boolean;
   debug?: boolean;
+  scope?: string;
 }
 
 const defaults: Config = {
   quiet: false,
   debug: false,
+  scope: '',
 };
 
 class Logger {
   config: Config;
+  signale: Signale;
 
   constructor(options: Config = {}) {
     this.config = {
       ...defaults,
       ...options,
     };
+    this.signale = signale;
     if (this.config.debug) {
       this.config.quiet = false;
+    }
+    if (this.config.scope) {
+      this.signale.scope(this.config.scope);
     }
   }
 
   debug(msg: string): void {
     if (this.config.debug) {
-      log.debug(msg);
+      this.signale.debug(msg);
     }
   }
 
   info(msg: string): void {
     if (!this.config.quiet) {
-      log.info(msg);
+      this.signale.info(msg);
     }
   }
 
   success(msg: string): void {
     if (!this.config.quiet) {
-      log.success(msg);
+      this.signale.success(msg);
     }
   }
 
   error(msg: string): void {
     if (!this.config.quiet) {
-      log.error(msg);
+      this.signale.error(msg);
     }
   }
 
   warn(msg: string): void {
     if (!this.config.quiet) {
-      log.warn(msg);
+      this.signale.warn(msg);
     }
   }
 }
