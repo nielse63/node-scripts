@@ -1,12 +1,15 @@
 {
   "packages": ["packages/*"],
-  "version": "0.0.3",
+  "version": "0.0.4-alpha.0",
   "command": {
     "publish": {
       "message": "chore(release): publish"
     },
     "bootstrap": {
       "npmClientArgs": ["--save-exact"]
+    },
+    "version": {
+      "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"]
     }
   }
 }

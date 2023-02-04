@@ -17,7 +17,7 @@ describe('Logger', () => {
       expect(signale.scope).not.toHaveBeenCalled();
     });
   });
-  
+
   describe('debug', () => {
     it('should print to log when debug is true', () => {
       const cli = new Logger({ debug: true });

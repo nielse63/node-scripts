@@ -5,5 +5,5 @@ npx lerna bootstrap
 npx lerna link
 npm run build
 npm run lint
-npm test -- --ignore-scripts
+npm test
 npx lerna publish
