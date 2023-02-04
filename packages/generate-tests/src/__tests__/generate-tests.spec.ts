@@ -1,9 +1,10 @@
-import fs from 'fs-extra';
-import path from 'path';
-import os from 'os';
 import cp from 'child_process';
-import generateTests from '../generate-tests';
+import fs from 'fs-extra';
+import os from 'os';
+import path from 'path';
+import signale from 'signale';
 import pkg from '../../package.json';
+import generateTests, { GenerateTests } from '../generate-tests';
 
 const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
 const srcdir = path.join(root, 'src');
@@ -17,6 +18,8 @@ const exec = async (cmd = ''): Promise<string> => {
   const output = cp.execSync(`${binpath} ${cmd}`.trim()).toString();
   return Promise.resolve(output.trim());
 };
+
+jest.mock('signale');
 
 describe('generate-tests', () => {
   let cwd;
@@ -64,6 +67,34 @@ describe('generate-tests', () => {
     it('should not run when no src files found', async () => {
       await exec('**/lib/**.{js,ts}');
       expect(fs.existsSync(testfile)).toBeFalse();
+    });
+  });
+
+  describe('#debug', () => {
+    it('should call debug only when specified', async () => {
+      await generateTests(root, '**/src/**.{js,ts}', { debug: true });
+      expect(signale.debug).toHaveBeenCalled();
+    });
+
+    it('should not call debug when not in config', async () => {
+      await generateTests(root);
+      expect(signale.debug).not.toHaveBeenCalled();
+    });
+  });
+
+  describe('#createFileObjects', () => {
+    it('should return empty array if not file objects created', async () => {
+      const gt = new GenerateTests(root, '**/does-not-exist/**.{js,ts}');
+      const files = await gt.findFiles();
+      const output = gt.createFileObjects(files);
+      expect(output).toEqual([]);
+    });
+  });
+
+  describe('#createTestTemplate', () => {
+    it('should convert kebabCase to snakeCase', () => {
+      const template = GenerateTests.createTestTemplate('snake-case');
+      expect(template.includes('import snakeCase')).toBeTrue();
     });
   });
 });

@@ -1,6 +1,6 @@
 import fs from 'fs-extra';
 import path from 'path';
-import log from 'signale';
+import signale from 'signale';
 
 interface Options {
   debug: boolean;
@@ -22,13 +22,13 @@ export class CopyEnv {
 
   debug(message = ''): void {
     if (this.options.debug) {
-      log.debug(message);
+      signale.debug(message);
     }
   }
 
   async formatEnv(filepath: string): Promise<string> {
     if (!fs.existsSync(filepath)) {
-      log.error(`${filepath} does not exist`);
+      signale.error(`${filepath} does not exist`);
       return '';
     }
     const content = await fs.readFile(filepath, 'utf8');
@@ -49,7 +49,7 @@ export class CopyEnv {
     const content = await this.formatEnv(this.envPath);
     this.debug(`copying to ${this.envSamplePath}`);
     await fs.writeFile(this.envSamplePath, content, 'utf8');
-    log.success('.env updated');
+    signale.success('.env updated');
     return this.envSamplePath;
   }
 }

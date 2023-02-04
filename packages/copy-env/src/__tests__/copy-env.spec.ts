@@ -2,6 +2,7 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import signale from 'signale';
 import pkg from '../../package.json';
 import copyEnv, { CopyEnv } from '../copy-env';
 
@@ -15,6 +16,8 @@ const exec = async (cmd = ''): Promise<string> => {
   const output = cp.execSync(`${binpath} ${cmd}`.trim()).toString();
   return Promise.resolve(output.trim());
 };
+
+jest.mock('signale');
 
 describe('copy-env', () => {
   let cwd;
@@ -94,6 +97,18 @@ describe('copy-env', () => {
       expect(fs.existsSync(envsamplefile)).toBeFalse();
       await exec();
       expect(fs.existsSync(envsamplefile)).toBeTrue();
+    });
+  });
+
+  describe('#debug', () => {
+    it('should call debug only when specified', async () => {
+      await copyEnv(testdir, { debug: true });
+      expect(signale.debug).toHaveBeenCalled();
+    });
+
+    it('should not call debug when not in config', async () => {
+      await copyEnv(testdir);
+      expect(signale.debug).not.toHaveBeenCalled();
     });
   });
 });
