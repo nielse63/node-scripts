@@ -1,6 +1,9 @@
 import fg from 'fast-glob';
 import fs from 'fs-extra';
+import fsp from 'fs/promises';
+import gitignore, { Ignore } from 'ignore';
 import camelCase from 'lodash/camelCase';
+import os from 'os';
 import path from 'path';
 import log from 'signale';
 
@@ -16,13 +19,23 @@ interface Options {
   debug: boolean;
 }
 
+export const defaults = {
+  cwd: process.cwd(),
+  glob: '**/*.{js,ts}',
+  options: {
+    debug: false,
+  },
+};
+
 export class GenerateTests {
   cwd: string;
   glob: string;
   fileobjects: FileObject[];
   options: Options;
+  ignoredPatterns: string[];
+  ignore: Ignore;
 
-  constructor(cwd: string, glob = '**/src/**.{js,ts}', options = {}) {
+  constructor(cwd: string, glob = defaults.glob, options = {}) {
     this.cwd = cwd;
     this.glob = glob;
     this.fileobjects = [];
@@ -30,6 +43,8 @@ export class GenerateTests {
       debug: false,
       ...options,
     };
+    this.ignoredPatterns = [];
+    this.ignore = gitignore();
   }
 
   async run(): Promise<FileObject[]> {
@@ -47,22 +62,31 @@ export class GenerateTests {
     }
   }
 
+  async findGitignoreFiles(filepath = this.cwd): Promise<string[]> {
+    const gitignoreFile = path.join(filepath, '.gitignore');
+    if (fs.existsSync(gitignoreFile)) {
+      const content = await fsp.readFile(gitignoreFile, 'utf-8');
+      const lines = content.split('\n').filter((line) => {
+        return line && !line.startsWith('#') && gitignore.isPathValid(line);
+      });
+      this.ignore.add(lines);
+      this.ignoredPatterns.push(...lines);
+    }
+    if (filepath === '/' || filepath === os.homedir()) {
+      return this.ignoredPatterns;
+    }
+    return this.findGitignoreFiles(path.dirname(filepath));
+  }
+
   async findFiles(): Promise<string[]> {
+    await this.findGitignoreFiles();
     const files = await fg([this.glob], {
       cwd: this.cwd,
-      ignore: [
-        '**/node_modules/**',
-        '**/*.spec.*',
-        '**/*.test.*',
-        '**/dist/**',
-        '**/coverage/**',
-        '**/__tests__/**',
-        '**/__mocks__/**',
-        '**/*.config.js',
-      ],
+      ignore: ['**/node_modules', '**/flow-typed', '**/coverage', '**/.git'],
     });
-    this.debug(`files: \n  ${files.join('  \n')}`);
-    return files;
+    const filteredFiles = files.filter((file) => !this.ignore.ignores(file));
+    this.debug(`files: \n  ${filteredFiles.join('  \n')}`);
+    return filteredFiles;
   }
 
   createFileObjects(files: string[]): FileObject[] {
@@ -123,9 +147,9 @@ export class GenerateTests {
 }
 
 export default async (
-  cwd = process.cwd(),
-  glob = '**/src/**.{js,ts}',
-  options = {}
+  cwd = defaults.cwd,
+  glob = defaults.glob,
+  options = defaults.options
 ): Promise<FileObject[]> => {
   const generateTestst = new GenerateTests(cwd, glob, options);
   return generateTestst.run();
