@@ -2,27 +2,31 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import signale from 'signale';
-import pkg from '../../package.json';
-import generateTests, { GenerateTests } from '../generate-tests';
+import generateTests, { defaults, GenerateTests } from '../generate-tests';
 
-const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
+// const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
+const root = path.resolve(os.homedir(), 'git/generate-tests-tests');
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
+const gitignoreFile = path.join(root, '.gitignore');
 const testfile = path.join(srcdir, '__tests__/file.spec.js');
 const srccontent = `export default () => {}`;
+const gitignoreContent = `ignored_dir
+
+# ignore this line`;
 
 const exec = async (cmd = ''): Promise<string> => {
   const binpath = path.resolve(__dirname, '../../bin/generate-tests.js');
-  const output = cp.execSync(`${binpath} ${cmd}`.trim()).toString();
-  return Promise.resolve(output.trim());
+  return new Promise((resolve) => {
+    cp.execFile(binpath, [...cmd.split(' ')], (error, stdout) => {
+      resolve(`${stdout}`.trim());
+    });
+  });
 };
 
-jest.mock('signale');
-
 describe('generate-tests', () => {
-  let cwd;
+  let cwd: string;
   beforeAll(() => {
     cwd = process.env.JEST_STARTING_PWD || process.cwd();
   });
@@ -34,6 +38,10 @@ describe('generate-tests', () => {
     await fs.writeJSON(packagejson, { name: 'test' }, { spaces: 2 });
     await fs.ensureFile(srcfile);
     await fs.writeFile(srcfile, srccontent, 'utf8');
+    await fs.writeFile(gitignoreFile, gitignoreContent, 'utf-8');
+    await fs.ensureFile(path.join(root, 'node_modules/test.js'));
+    await fs.ensureFile(path.join(root, 'ignored_dir/test.js'));
+    await fs.writeFile(path.join(srcdir, '.gitignore'), 'nested', 'utf-8');
   });
 
   afterEach(async () => {
@@ -43,48 +51,60 @@ describe('generate-tests', () => {
 
   it('should create test files', async () => {
     expect(fs.existsSync(testfile)).toBeFalse();
-    await generateTests(root);
+    await generateTests({ cwd: root, verbose: true });
     expect(fs.existsSync(testfile)).toBeTrue();
   });
 
   describe('cli', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       process.chdir(root);
     });
 
     it('should print help', async () => {
       const output = await exec('--help');
       expect(output).toBeString();
-      expect(output.includes(pkg.description)).toBeTrue();
+      expect(output).toInclude('Usage: generate-tests');
     });
 
     it('should generate test files', async () => {
       expect(fs.existsSync(testfile)).toBeFalse();
-      await exec();
+      await exec(defaults.glob);
       expect(fs.existsSync(testfile)).toBeTrue();
     });
 
     it('should not run when no src files found', async () => {
-      await exec('**/lib/**.{js,ts}');
+      await exec('**/lib/*.{js,ts}');
       expect(fs.existsSync(testfile)).toBeFalse();
     });
   });
 
   describe('#debug', () => {
+    let spy;
+    beforeEach(() => {
+      spy = jest.spyOn(console, 'debug');
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should call debug only when specified', async () => {
-      await generateTests(root, '**/src/**.{js,ts}', { debug: true });
-      expect(signale.debug).toHaveBeenCalled();
+      await generateTests({ cwd: root, glob: defaults.glob, verbose: true });
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should not call debug when not in config', async () => {
-      await generateTests(root);
-      expect(signale.debug).not.toHaveBeenCalled();
+      await generateTests({ cwd: root });
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
   describe('#createFileObjects', () => {
     it('should return empty array if not file objects created', async () => {
-      const gt = new GenerateTests(root, '**/does-not-exist/**.{js,ts}');
+      const gt = new GenerateTests({
+        cwd: root,
+        glob: '**/does-not-exist/*.{js,ts}',
+      });
       const files = await gt.findFiles();
       const output = gt.createFileObjects(files);
       expect(output).toEqual([]);
@@ -95,6 +115,31 @@ describe('generate-tests', () => {
     it('should convert kebabCase to snakeCase', () => {
       const template = GenerateTests.createTestTemplate('snake-case');
       expect(template.includes('import snakeCase')).toBeTrue();
+    });
+  });
+
+  describe('#findGitignoreFiles', () => {
+    it('should read from gitignore files', async () => {
+      const gt = new GenerateTests({ cwd: root });
+      const output = await gt.findGitignoreFiles();
+      expect(output).toIncludeAllMembers(['ignored_dir']);
+    });
+
+    it('should recursively read from gitignore files', async () => {
+      const gt = new GenerateTests({ cwd: srcdir });
+      const output = await gt.findGitignoreFiles();
+      expect(output).toIncludeAllMembers(['nested', 'ignored_dir']);
+    });
+  });
+
+  describe('#findFiles', () => {
+    it('should ignore files', async () => {
+      const gt = new GenerateTests({ cwd: root });
+      const output = await gt.findFiles();
+      expect(output).not.toIncludeAllMembers([
+        'node_modules/test.js',
+        'ignored_dir/test.js',
+      ]);
     });
   });
 });

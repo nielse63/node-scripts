@@ -15,16 +15,16 @@ npm -g i @nielse63/generate-tests
 ```bash
 $ generate-tests --help
 
-Usage: generate-tests [options] [files]
+Usage: generate-tests [options] <glob>
 
 Automatically generate jest specs for uncovered source files
 
 Arguments:
-  files          Glob pattern to src files (default: "**/src/**.{js,ts}")
+  glob           Glob pattern of source files
 
 Options:
-  -q, --quiet    Disable console output (default: false)
-  --debug        Print debug output (default: false)
+  -V, --verbose  Print debug output (default: false)
+  -D, --cwd      Current working directory
   -V, --version  output the version number
   -h, --help     display help for command
 ```
@@ -34,12 +34,20 @@ Options:
 ```js
 import generateTests from '@nielse63/generate-tests';
 
-const path = '/path/to/project';
-const pattern = '**/src/**.{js,ts}';
-const options = {
-  quiet: false,
-  debug: false,
-};
+const results = await generateTests({
+  cwd: '/path/to/project',
+  glob: '**/src/**.{js,ts}',
+  verbose: true,
+});
 
-await generateTests(path, pattern, options);
+// results:
+// [
+//       {
+//         file: 'src/file.js',
+//         abspath: '/path/to/project/src/file.js',
+//         testpath: '/path/to/project/src/__tests__/file.spec.js',
+//         basename: 'file.js',
+//         classname: 'file'
+//       }
+//     ]
 ```

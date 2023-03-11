@@ -1,4 +1,5 @@
 {
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
   "packages": ["packages/*"],
   "version": "0.0.4",
   "command": {
@@ -11,5 +12,6 @@
     "version": {
       "ignoreChanges": ["**/__fixtures__/**", "**/__tests__/**", "**/*.md"]
     }
-  }
+  },
+  "useWorkspaces": false
 }

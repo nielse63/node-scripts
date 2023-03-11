@@ -24,7 +24,7 @@ module.exports = {
         tsx: 'never',
       },
     ],
-    'no-console': ['error', { allow: ['error'] }],
+    'no-console': ['error', { allow: ['error', 'debug'] }],
     '@typescript-eslint/lines-between-class-members': [
       'warn',
       'always',
