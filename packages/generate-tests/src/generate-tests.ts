@@ -1,11 +1,9 @@
 import fg from 'fast-glob';
 import fs from 'fs-extra';
-import fsp from 'fs/promises';
 import gitignore, { Ignore } from 'ignore';
 import camelCase from 'lodash/camelCase';
 import os from 'os';
 import path from 'path';
-import log from 'signale';
 
 interface FileObject {
   file: string;
@@ -16,33 +14,40 @@ interface FileObject {
 }
 
 interface Options {
-  debug: boolean;
+  cwd: string;
+  glob?: string;
+  verbose?: boolean;
 }
 
 export const defaults = {
   cwd: process.cwd(),
-  glob: '**/*.{js,ts}',
-  options: {
-    debug: false,
-  },
+  glob: '**/src/**.{js,ts}',
+  verbose: false,
 };
 
 export class GenerateTests {
   cwd: string;
   glob: string;
+  verbose: boolean;
   fileobjects: FileObject[];
-  options: Options;
   ignoredPatterns: string[];
   ignore: Ignore;
 
-  constructor(cwd: string, glob = defaults.glob, options = {}) {
-    this.cwd = cwd;
-    this.glob = glob;
+  constructor(options: Options | string) {
+    const config =
+      typeof options === 'string'
+        ? {
+            ...defaults,
+            glob: options,
+          }
+        : {
+            ...defaults,
+            ...options,
+          };
+    this.cwd = config.cwd;
+    this.glob = config.glob;
+    this.verbose = config.verbose;
     this.fileobjects = [];
-    this.options = {
-      debug: false,
-      ...options,
-    };
     this.ignoredPatterns = [];
     this.ignore = gitignore();
   }
@@ -52,20 +57,20 @@ export class GenerateTests {
     this.fileobjects = this.createFileObjects(files);
     await this.ensureFiles();
     await this.writeFiles();
-    log.success('Generated test files');
+    this.debug('Generated test files');
     return this.fileobjects;
   }
 
   debug(message = ''): void {
-    if (this.options.debug) {
-      log.debug(message);
+    if (this.verbose) {
+      console.debug(message);
     }
   }
 
   async findGitignoreFiles(filepath = this.cwd): Promise<string[]> {
     const gitignoreFile = path.join(filepath, '.gitignore');
     if (fs.existsSync(gitignoreFile)) {
-      const content = await fsp.readFile(gitignoreFile, 'utf-8');
+      const content = await fs.readFile(gitignoreFile, 'utf-8');
       const lines = content.split('\n').filter((line) => {
         return line && !line.startsWith('#') && gitignore.isPathValid(line);
       });
@@ -147,10 +152,9 @@ export class GenerateTests {
 }
 
 export default async (
-  cwd = defaults.cwd,
-  glob = defaults.glob,
-  options = defaults.options
+  options: Options | string = { ...defaults }
 ): Promise<FileObject[]> => {
-  const generateTestst = new GenerateTests(cwd, glob, options);
-  return generateTestst.run();
+  const generateTestst = new GenerateTests(options);
+  const output = await generateTestst.run();
+  return output;
 };

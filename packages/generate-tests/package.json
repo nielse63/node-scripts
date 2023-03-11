@@ -38,8 +38,7 @@
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
     "ignore": "^5.2.4",
-    "lodash": "^4.17.21",
-    "signale": "^1.4.0"
+    "lodash": "^4.17.21"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"

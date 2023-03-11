@@ -4,9 +4,9 @@ const pkg = require('../package.json');
 const { default: generateTests } = require('../dist/generate-tests');
 
 program
-  .option('-q, --quiet', 'Disable console output', false)
-  .option('--debug', 'Print debug output', false)
-  .argument('[files]', 'Glob pattern to src files', '**/src/**.{js,ts}')
+  .option('-V, --verbose', 'Print debug output', false)
+  .option('-D, --cwd', 'Current working directory', process.cwd())
+  .argument('<glob>', 'Glob pattern of source files')
   .description(pkg.description)
   .version(pkg.version)
   .parse(process.argv);
@@ -14,4 +14,4 @@ program
 const [glob] = program.processedArgs;
 const options = program.opts();
 
-generateTests(process.cwd(), glob, options).catch(console.error);
+generateTests({ glob, ...options }).catch(console.error);

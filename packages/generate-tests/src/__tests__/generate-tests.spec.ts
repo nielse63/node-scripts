@@ -2,7 +2,6 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import signale from 'signale';
 import generateTests, { defaults, GenerateTests } from '../generate-tests';
 
 const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
@@ -18,11 +17,13 @@ const gitignoreContent = `ignored_dir
 
 const exec = async (cmd = ''): Promise<string> => {
   const binpath = path.resolve(__dirname, '../../bin/generate-tests.js');
-  const output = cp.execSync(`${binpath} ${cmd}`.trim()).toString();
-  return Promise.resolve(output.trim());
+  return new Promise((resolve) => {
+    cp.execFile(binpath, [...cmd.split(' ')], (error, stdout) => {
+      console.log(stdout);
+      resolve(`${stdout}`.trim());
+    });
+  });
 };
-
-jest.mock('signale');
 
 describe('generate-tests', () => {
   let cwd: string;
@@ -55,7 +56,7 @@ describe('generate-tests', () => {
   });
 
   describe('cli', () => {
-    beforeEach(async () => {
+    beforeEach(() => {
       process.chdir(root);
     });
 
@@ -67,7 +68,7 @@ describe('generate-tests', () => {
 
     it('should generate test files', async () => {
       expect(fs.existsSync(testfile)).toBeFalse();
-      await exec();
+      await exec(defaults.glob);
       expect(fs.existsSync(testfile)).toBeTrue();
     });
 
@@ -78,20 +79,32 @@ describe('generate-tests', () => {
   });
 
   describe('#debug', () => {
+    let spy;
+    beforeEach(() => {
+      spy = jest.spyOn(console, 'debug');
+    });
+
+    afterEach(() => {
+      jest.clearAllMocks();
+    });
+
     it('should call debug only when specified', async () => {
-      await generateTests(root, defaults.glob, { debug: true });
-      expect(signale.debug).toHaveBeenCalled();
+      await generateTests({ cwd: root, glob: defaults.glob, verbose: true });
+      expect(spy).toHaveBeenCalled();
     });
 
     it('should not call debug when not in config', async () => {
       await generateTests(root);
-      expect(signale.debug).not.toHaveBeenCalled();
+      expect(spy).not.toHaveBeenCalled();
     });
   });
 
   describe('#createFileObjects', () => {
     it('should return empty array if not file objects created', async () => {
-      const gt = new GenerateTests(root, '**/does-not-exist/*.{js,ts}');
+      const gt = new GenerateTests({
+        cwd: root,
+        glob: '**/does-not-exist/*.{js,ts}',
+      });
       const files = await gt.findFiles();
       const output = gt.createFileObjects(files);
       expect(output).toEqual([]);
