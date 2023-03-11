@@ -4,7 +4,8 @@ import os from 'os';
 import path from 'path';
 import generateTests, { defaults, GenerateTests } from '../generate-tests';
 
-const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
+// const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
+const root = path.resolve(os.homedir(), 'git/generate-tests-tests');
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
@@ -19,7 +20,6 @@ const exec = async (cmd = ''): Promise<string> => {
   const binpath = path.resolve(__dirname, '../../bin/generate-tests.js');
   return new Promise((resolve) => {
     cp.execFile(binpath, [...cmd.split(' ')], (error, stdout) => {
-      console.log(stdout);
       resolve(`${stdout}`.trim());
     });
   });
@@ -51,7 +51,7 @@ describe('generate-tests', () => {
 
   it('should create test files', async () => {
     expect(fs.existsSync(testfile)).toBeFalse();
-    await generateTests(root);
+    await generateTests({ cwd: root, verbose: true });
     expect(fs.existsSync(testfile)).toBeTrue();
   });
 
@@ -94,7 +94,7 @@ describe('generate-tests', () => {
     });
 
     it('should not call debug when not in config', async () => {
-      await generateTests(root);
+      await generateTests({ cwd: root });
       expect(spy).not.toHaveBeenCalled();
     });
   });
@@ -120,13 +120,13 @@ describe('generate-tests', () => {
 
   describe('#findGitignoreFiles', () => {
     it('should read from gitignore files', async () => {
-      const gt = new GenerateTests(root);
+      const gt = new GenerateTests({ cwd: root });
       const output = await gt.findGitignoreFiles();
       expect(output).toIncludeAllMembers(['ignored_dir']);
     });
 
     it('should recursively read from gitignore files', async () => {
-      const gt = new GenerateTests(srcdir);
+      const gt = new GenerateTests({ cwd: srcdir });
       const output = await gt.findGitignoreFiles();
       expect(output).toIncludeAllMembers(['nested', 'ignored_dir']);
     });
@@ -134,7 +134,7 @@ describe('generate-tests', () => {
 
   describe('#findFiles', () => {
     it('should ignore files', async () => {
-      const gt = new GenerateTests(root);
+      const gt = new GenerateTests({ cwd: root });
       const output = await gt.findFiles();
       expect(output).not.toIncludeAllMembers([
         'node_modules/test.js',
