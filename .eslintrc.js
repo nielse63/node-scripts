@@ -35,7 +35,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['.bin/**/*', '**/*.spec.{js,ts}'],
+      files: ['.bin/**/*', '**/*.spec.{js,ts}', 'config/**/*'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
         'no-underscore-dangle': 'off',

@@ -1,0 +1,51 @@
+# `@nielse63/{{name}}`
+
+> {{description}}
+
+## Installation
+
+```bash
+npm -g i @nielse63/{{name}}
+```
+
+## Usage
+
+### CLI
+
+```bash
+$ {{name}} --help
+
+Usage: {{name}} [options] <arguments>
+
+{{description}}
+
+Arguments:
+  ...
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```
+
+### API
+
+```js
+import generateTests from '@nielse63/{{name}}';
+
+const results = await generateTests({
+  cwd: '/path/to/project',
+  glob: '**/src/**.{js,ts}',
+  verbose: true,
+});
+
+// results:
+// [
+//       {
+//         file: 'src/file.js',
+//         abspath: '/path/to/project/src/file.js',
+//         testpath: '/path/to/project/src/__tests__/file.spec.js',
+//         basename: 'file.js',
+//         classname: 'file'
+//       }
+//     ]
+```

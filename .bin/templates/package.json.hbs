@@ -1,0 +1,39 @@
+{
+  "name": "@nielse63/{{kebabCase name}}",
+  "version": "{{version}}",
+  "description": "{{description}}",
+  "keywords": [
+    {{{keywords}}}
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/{{name}}#readme",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "files": [{{#if cli}}
+    "cli.js",{{/if}}
+    "dist"
+  ],{{#if cli}}
+  "bin": {
+    "{{kebabCase name}}": "cli.js"
+  },{{/if}}
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "prepublishOnly": "npm run build",
+    "prebuild": "rm -rf dist/",
+    "build": "tsc --project tsconfig.json"
+  },
+  "dependencies": {
+    {{#if cli}}"commander": "^10.0.0"{{/if}}
+  }
+}
