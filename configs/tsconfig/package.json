@@ -1,0 +1,36 @@
+{
+  "name": "@nielse63/tsconfig",
+  "version": "0.0.4",
+  "description": "Shared TypeScript config for basic projects",
+  "keywords": [
+    "typescript",
+    "typescript-config",
+    "tsconfig",
+    "ts",
+    "config",
+    "utils",
+    "helpers",
+    "utility",
+    "utilities"
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/tsconfig#readme",
+  "license": "MIT",
+  "main": "tsconfig.json",
+  "files": [
+    "tsconfig.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
