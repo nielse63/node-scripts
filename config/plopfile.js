@@ -71,7 +71,6 @@ module.exports = (plop) => {
       },
     ],
     actions: (data) => {
-      console.log(data);
       const packages = path.resolve(__dirname, '..', `${data.type}s`);
       const files = fg
         .sync([path.join(templates, '**/*.hbs')], { dot: true })
@@ -119,7 +118,6 @@ module.exports = (plop) => {
         );
       }
 
-      console.log(actions);
       return actions;
     },
   });
