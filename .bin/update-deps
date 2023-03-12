@@ -2,7 +2,9 @@
 const path = require('path');
 const log = require('signale');
 const fs = require('fs');
-const exec = require('./helpers/exec');
+const exec = require('@nielse63/exec');
+
+const dryRun = process.argv.includes('--dry-run');
 
 const updateDependencies = async (
   object = {},
@@ -14,7 +16,9 @@ const updateDependencies = async (
   const string = keys.map((key) => `${key}@latest`).join(' ');
   const command = `npm install ${flags.join(' ')} ${string}`;
   log.info(`Running ${command}`);
-  await exec(command, { ...options });
+  if (!dryRun) {
+    await exec(command, { ...options });
+  }
 };
 
 const main = async () => {

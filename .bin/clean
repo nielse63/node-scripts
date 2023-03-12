@@ -1,20 +1,46 @@
-#!/usr/bin/env bash
-set -e
+#!/usr/bin/env node
+const fg = require('fast-glob');
+const fs = require('fs');
+const path = require('path');
+const flatten = require('lodash/flatten');
+const pkg = require('../package.json');
+const trash = require('./helpers/trash');
 
-root="$(dirname "$(dirname "$0")")"
-cd "$root"
+const packageLock = process.argv.includes('--package-lock');
 
-echo "lerna clean --yes"
-npx lerna clean --yes || :
-echo "rm -rf node_modules"
-if [ -d "$HOME/.Trash" ]; then
-  mv "$root/node_modules" "$HOME/.Trash/node_modules"
-fi
-rm -rf "$root/node_modules"
-items=$(find "$root/packages" \( -name dist \))
+// paths
+const root = path.resolve(__dirname, '../');
 
-for item in $items
-do
-  echo "rm -rf $item"
-  rm -rf "$item"
-done
+// functions
+const getPaths = async () => {
+  const options = ['**/node_modules', '**/dist', '**/coverage'];
+  if (packageLock) {
+    options.push('**/package-lock.json');
+  }
+  const paths = pkg.workspaces
+    .map((item) => {
+      return path.join(root, item.replace(/\/\*$/, ''));
+    })
+    .concat(root);
+  const promises = paths.map((dir) => {
+    return fg(options, {
+      onlyFiles: false,
+      deep: dir === root ? 1 : 2,
+      cwd: dir,
+    });
+  });
+  const results = await Promise.all(promises);
+  return flatten(results)
+    .map((dir) => path.join(root, dir))
+    .filter((dir) => fs.existsSync(dir));
+};
+
+const main = async () => {
+  const paths = await getPaths();
+  const promises = paths.map((dir) => {
+    return trash(dir);
+  });
+  await Promise.all(promises);
+};
+
+main().catch(console.error);

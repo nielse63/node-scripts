@@ -5,9 +5,6 @@ module.exports = {
     browser: true,
     jest: true,
   },
-  // parser: '@typescript-eslint/parser',
-  // plugins: ['jest'],
-  // extends: ['airbnb-base', 'prettier', 'plugin:jest/recommended'],
   plugins: ['import', 'prettier', 'jest'],
   extends: ['airbnb-typescript/base', 'prettier', 'plugin:jest/recommended'],
   parserOptions: {
