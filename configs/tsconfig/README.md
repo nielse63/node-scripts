@@ -16,9 +16,9 @@ npm install --save-dev @nielse63/tsconfig
 {
   "extends": "@nielse63/tsconfig",
   "compilerOptions": {
-    // your custom options here...
+    "outDir": "./dist"
   },
-  "include": ["./lib/**/*.ts"] // custom includes
+  "include": ["./src/**/*.ts"]
 }
 ```
 

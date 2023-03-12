@@ -2,7 +2,5 @@
   "extends": "@nielse63/tsconfig",
   "compilerOptions": {
     "allowJs": true
-  },
-  "include": ["**/*.ts", "**/*.js", ".*.js", ".bin/**/*"],
-  "exclude": ["**/node_modules/**", "**/dist/**"]
+  }
 }

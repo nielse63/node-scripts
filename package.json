@@ -36,6 +36,8 @@
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@nielse63/tsconfig": "^0.0.4",
+    "@nielse63/tsconfig-eslint": "^0.0.4",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
