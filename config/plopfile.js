@@ -6,6 +6,7 @@ const cp = require('child_process');
 const { version } = require('../lerna.json');
 
 const templates = path.resolve(__dirname, '../.bin/templates');
+const packages = path.resolve(__dirname, '../packages');
 
 module.exports = (plop) => {
   /** @type {import('plop').NodePlopAPI} */
@@ -40,15 +41,6 @@ module.exports = (plop) => {
     description: 'Generate a new package',
     prompts: [
       {
-        type: 'list',
-        name: 'type',
-        message: 'Package Type',
-        choices: [
-          { name: 'Package', value: 'package', checked: true },
-          { name: 'Config', value: 'config' },
-        ],
-      },
-      {
         type: 'input',
         name: 'name',
         message: 'Package name',
@@ -71,7 +63,6 @@ module.exports = (plop) => {
       },
     ],
     actions: (data) => {
-      const packages = path.resolve(__dirname, '..', `${data.type}s`);
       const files = fg
         .sync([path.join(templates, '**/*.hbs')], { dot: true })
         .filter((file) => !file.endsWith('cli.js.hbs'));

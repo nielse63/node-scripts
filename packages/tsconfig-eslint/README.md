@@ -15,14 +15,24 @@ npm install --save-dev \
 
 ## Usage
 
+Create a file called `tsconfig.eslint.json` in your project root with the following content:
+
+```jsonc
+{
+  "extends": "@nielse63/tsconfig-eslint",
+  // you can customize your include and exclude values
+  "include": ["**/*.ts", "**/*.js", ".*.js", ".bin/**/*"],
+  "exclude": ["**/node_modules/**", "**/dist/**"]
+}
+```
+
 Update your `.eslintrc.js` file:
 
 ```js
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    tsconfigRootDir: __dirname,
-    project: ['./node_modules/@nielse63/tsconfig-eslint/tsconfig.json'],
+    project: ['./tsconfig.eslint.json'],
   },
 };
 ```

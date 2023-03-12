@@ -1,0 +1,34 @@
+{
+  "name": "@nielse63/prettier-config",
+  "version": "0.0.4",
+  "description": "Shared prettier config",
+  "keywords": [
+    "prettier",
+    "prettierrc",
+    "prettier-config",
+    "utils",
+    "helpers",
+    "utility",
+    "utilities"
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/prettier-config#readme",
+  "license": "MIT",
+  "main": "index.json",
+  "files": [
+    "index.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  }
+}
