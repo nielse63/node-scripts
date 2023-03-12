@@ -1,0 +1,39 @@
+{
+  "name": "@nielse63/tsconfig-eslint",
+  "version": "0.0.4",
+  "description": "Shareable TypeScript config to be used with ESLint",
+  "keywords": [
+    "typescript",
+    "tsconfig",
+    "ts",
+    "typescript-eslint",
+    "eslint",
+    "utils",
+    "helpers",
+    "utility",
+    "utilities"
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/tsconfig-eslint#readme",
+  "license": "MIT",
+  "main": "tsconfig.json",
+  "files": [
+    "tsconfig.json"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1"
+  },
+  "dependencies": {
+    "@nielse63/tsconfig": "file:../tsconfig"
+  }
+}

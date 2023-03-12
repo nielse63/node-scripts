@@ -1,0 +1,6 @@
+{
+  "extends": "@nielse63/tsconfig",
+  "compilerOptions": {
+    "allowJs": true
+  }
+}

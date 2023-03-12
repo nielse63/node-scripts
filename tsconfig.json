@@ -1,13 +1,7 @@
 {
+  "extends": "@nielse63/tsconfig",
   "compilerOptions": {
-    "target": "es2016",
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "removeComments": true,
-    "declaration": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "skipLibCheck": true
+    "outDir": "./dist"
   },
   "include": ["./packages/**/src/**/*.ts"],
   "exclude": [
