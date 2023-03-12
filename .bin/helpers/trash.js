@@ -18,15 +18,8 @@ const trash = async (filepath) => {
     const filename = basename.replace(new RegExp(`${extension}$`), '');
     let newName = path.join(
       TRASH_PATH,
-      filename + '_' + Date.now() + extension
+      filename + '_' + Date.now() + `_${random}` + extension
     );
-    if (fs.existsSync(newName)) {
-      const random = Math.floor(Math.random() * 10000);
-      newName = newName.replace(
-        new RegExp(`${extension}$`),
-        `_${random}${extension}`
-      );
-    }
     log(
       `Moving ${path.relative(root, filepath)} to ${newName.replace(
         os.homedir(),

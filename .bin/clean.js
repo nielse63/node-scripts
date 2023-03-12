@@ -31,15 +31,23 @@ const getPaths = async () => {
     return results.map((item) => path.join(dir, item));
   });
   const results = await Promise.all(promises);
-  return flatten(results).filter((dir) => fs.existsSync(dir));
+  return flatten(results)
+    .filter((dir) => fs.existsSync(dir))
+    .sort((a, b) => {
+      if (a.includes('node_modules') && !b.includes('node_modules')) return -1;
+      if (b.includes('node_modules') > a.includes('node_modules')) return 1;
+      return 0;
+    })
+    .sort((a, b) => {
+      if (a.length > b.length) return -1;
+      if (b.length > a.length) return 1;
+      return 0;
+    });
 };
 
 const main = async () => {
   const paths = await getPaths();
-  const promises = paths.map((dir) => {
-    return trash(dir);
-  });
-  await Promise.all(promises);
+  await Promise.all(paths.map(trash));
 };
 
 main().catch(console.error);
