@@ -6,7 +6,6 @@
 
 ## Packages
 
-- [@nielse63/helpers](../packages/helpers/)
 - [@nielse63/copy-env](../packages/copy-env/)
 - [@nielse63/generate-tests](../packages/generate-tests/)
 
