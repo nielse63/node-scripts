@@ -72,7 +72,6 @@
     ]
   },
   "workspaces": [
-    "packages/*",
-    "configs/*"
+    "packages/*"
   ]
 }
