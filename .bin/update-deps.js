@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 const path = require('path');
-const log = require('signale');
 const fs = require('fs');
 const exec = require('@nielse63/exec');
+const log = require('./helpers/log');
 
 const dryRun = process.argv.includes('--dry-run');
 
@@ -15,7 +15,7 @@ const updateDependencies = async (
   if (!keys.length) return;
   const string = keys.map((key) => `${key}@latest`).join(' ');
   const command = `npm install ${flags.join(' ')} ${string}`;
-  log.info(`Running ${command}`);
+  log(`Running ${command}`);
   if (!dryRun) {
     await exec(command, { ...options });
   }
@@ -44,14 +44,13 @@ const main = async () => {
         ? ['--workspace', path.relative(root, dir)]
         : [];
       // console.log({ dependencies: true, dir, flags });
-      await updateDependencies(json['dependencies'], flags);
+      await updateDependencies(json.dependencies, flags);
     }
     if ('devDependencies' in json) {
       const flags = dir.includes('/packages/')
         ? ['--workspace', path.relative(root, dir), '--save-dev']
         : ['--save-dev'];
-      // console.log({ devDependencies: true, dir, flags });
-      await updateDependencies(json['devDependencies'], flags);
+      await updateDependencies(json.devDependencies, flags);
     }
   });
   await Promise.all(promises);
@@ -59,9 +58,9 @@ const main = async () => {
 
 main()
   .then(() => {
-    log.success('Dependencies updated');
+    log('Dependencies updated');
   })
   .catch((error) => {
-    log.error(error);
+    console.error(error);
     process.exit(1);
   });

@@ -22,17 +22,16 @@ const getPaths = async () => {
       return path.join(root, item.replace(/\/\*$/, ''));
     })
     .concat(root);
-  const promises = paths.map((dir) => {
-    return fg(options, {
+  const promises = paths.map(async (dir) => {
+    const results = await fg(options, {
       onlyFiles: false,
       deep: dir === root ? 1 : 2,
       cwd: dir,
     });
+    return results.map((item) => path.join(dir, item));
   });
   const results = await Promise.all(promises);
-  return flatten(results)
-    .map((dir) => path.join(root, dir))
-    .filter((dir) => fs.existsSync(dir));
+  return flatten(results).filter((dir) => fs.existsSync(dir));
 };
 
 const main = async () => {

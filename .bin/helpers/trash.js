@@ -1,14 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const os = require('os');
+const log = require('./log');
 
 const dryRun = process.argv.includes('--dry-run');
 const TRASH_PATH = path.join(os.homedir(), '.Trash');
 const root = path.resolve(__dirname, '../..');
-
-const log = (msg) => {
-  console.log(dryRun ? '[DRY RUN]:' : '', msg);
-};
 
 const trash = async (filepath) => {
   if (!fs.existsSync(filepath)) {
@@ -30,7 +27,12 @@ const trash = async (filepath) => {
         `_${random}${extension}`
       );
     }
-    log(`Moving ${path.relative(root, filepath)} to ${newName}`);
+    log(
+      `Moving ${path.relative(root, filepath)} to ${newName.replace(
+        os.homedir(),
+        '~'
+      )}`
+    );
     if (!dryRun) {
       await fs.promises.rename(filepath, newName);
     }

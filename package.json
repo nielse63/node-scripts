@@ -7,8 +7,10 @@
     "lint": "prettier --write . && eslint --fix .",
     "release": ".bin/release",
     "prepare": "husky install",
-    "build": "lerna exec --parallel 'npm run build --if-present'",
-    "generate": "plop --plopfile config/plopfile.js"
+    "build": "lerna exec 'npm run build --if-present'",
+    "generate": "plop --plopfile config/plopfile.js",
+    "clean": ".bin/clean.js",
+    "update": ".bin/update-deps.js"
   },
   "repository": {
     "type": "git",
@@ -36,14 +38,13 @@
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@nielse63/exec": "file:./packages/exec",
     "@nielse63/tsconfig": "file:./packages/tsconfig",
     "@nielse63/tsconfig-eslint": "file:./packages/tsconfig-eslint",
-    "@nielse63/exec": "file:./packages/exec",
     "@types/fs-extra": "^11.0.1",
     "@types/jest": "^29.4.0",
     "@types/lodash": "^4.14.191",
     "@types/node": "^18.15.0",
-    "@types/signale": "^1.4.4",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "babel-jest": "^29.5.0",
@@ -63,7 +64,6 @@
     "lodash": "^4.17.21",
     "plop": "^3.1.2",
     "prettier": "^2.8.4",
-    "signale": "^1.4.0",
     "typescript": "^4.9.5"
   },
   "lint-staged": {
