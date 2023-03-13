@@ -10,11 +10,19 @@
   "author": "Erik Nielsen <erik@312development.com>",
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/generate-tests#readme",
   "license": "MIT",
-  "main": "dist/cjs/generate-tests.js",
-  "types": "dist/cjs/generate-tests.d.js",
+  "main": "./dist/cjs/index.js",
   "exports": {
-    "import": "./dist/generate-tests.js",
-    "require": "./dist/cjs/generate-tests.js"
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "default": "./dist/index.js"
+    }
   },
   "files": [
     "bin",

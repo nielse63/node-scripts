@@ -5,7 +5,7 @@ import camelCase from 'lodash/camelCase';
 import os from 'os';
 import path from 'path';
 
-interface FileObject {
+export interface FileObject {
   file: string;
   abspath: string;
   testpath: string;
@@ -13,7 +13,7 @@ interface FileObject {
   classname: string;
 }
 
-interface Options {
+export interface Options {
   cwd: string;
   glob?: string;
   verbose?: boolean;
@@ -150,11 +150,3 @@ export class GenerateTests {
   `;
   }
 }
-
-export default async (
-  options: Options | string = { ...defaults }
-): Promise<FileObject[]> => {
-  const generateTests = new GenerateTests(options);
-  const output = await generateTests.run();
-  return output;
-};

@@ -2,7 +2,8 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import generateTests, { defaults, GenerateTests } from '../generate-tests';
+import { defaults, GenerateTests } from '../GenerateTests';
+import generateTests from '../index';
 
 const root = path.resolve(os.homedir(), '.cache/generate-tests-tests');
 const srcdir = path.join(root, 'src');
