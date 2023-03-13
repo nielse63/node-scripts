@@ -42,14 +42,14 @@ function release() {
   fi
 
   # create git tag
-  git tag "v$tag" -m "chore(release): v$tag"
+  git tag "v$tag" -m "Release v$tag"
 
   # generate changelog
   npx generate-changelog --allow-unknown
 
   # push to remote
   git add .
-  git commit -m "Release: v$tag"
+  git commit -m "chore(release): v$tag"
   git push --follow-tags
 
   # publish to npm
