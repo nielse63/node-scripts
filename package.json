@@ -76,8 +76,7 @@
   "lint-staged": {
     "*.{js,ts,json,md,yml,html}": [
       "prettier --write"
-    ],
-    "README.md": "cp README.md docs/README.md"
+    ]
   },
   "workspaces": [
     "packages/*"
