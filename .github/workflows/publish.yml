@@ -20,6 +20,6 @@ jobs:
       - run: npm run build
       - run: npm run lint
       - run: npm test
-      - run: npx lerna publish patch --yes
+      - run: npx lerna publish from-git --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
