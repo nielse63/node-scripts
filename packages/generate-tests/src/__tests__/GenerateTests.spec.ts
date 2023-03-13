@@ -67,8 +67,10 @@ describe('generate-tests', () => {
     });
 
     it('should generate test files', async () => {
+      console.log(`root: ${root}`);
       expect(fs.existsSync(testfile)).toBeFalse();
-      await exec(`${defaults.glob} --verbose`);
+      await exec(defaults.glob);
+      console.log(`srcDir content: ${fs.readdir(srcdir)}`);
       expect(fs.existsSync(testfile)).toBeTrue();
     });
 
