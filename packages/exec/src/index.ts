@@ -1,16 +1,19 @@
 import cp from 'child_process';
 import util from 'util';
 
-const exec = util.promisify(cp.exec);
+const execPromise = util.promisify(cp.exec);
 
-export default async (cmd: string, options = {}): Promise<string> => {
+const exec = async (cmd: string, options = {}): Promise<string> => {
   try {
-    const { stdout } = await exec(cmd, {
+    const { stdout } = await execPromise(cmd, {
       cwd: process.cwd(),
       ...options,
     });
     return stdout.trim();
-  } catch (error: any) {
+  } catch (error: unknown) {
+    // @ts-expect-error: error is of string | undefined type
     return Promise.reject(new Error(error));
   }
 };
+
+export default exec;

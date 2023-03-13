@@ -9,8 +9,13 @@
   ],
   "author": "Erik Nielsen <erik@312development.com>",
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/exec#readme",
-  "license": "ISC",
-  "main": "dist/index.js",
+  "license": "MIT",
+  "main": "dist/cjs/index.js",
+  "types": "dist/cjs/index.d.js",
+  "exports": {
+    "import": "./dist/index.js",
+    "require": "./dist/cjs/index.js"
+  },
   "files": [
     "dist"
   ],
@@ -24,14 +29,12 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "prepublishOnly": "npm run build",
-    "clean": "rm -rf dist/",
-    "prebuild": "npm run clean",
-    "build": "tsc --project tsconfig.json"
+    "prebuild": "rm -rf dist/",
+    "build:mjs": "tsc --project tsconfig.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:mjs && npm run build:cjs"
   },
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
-  },
-  "dependencies": {
-    "fs-extra": "^11.1.0"
   }
 }

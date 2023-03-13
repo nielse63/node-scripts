@@ -9,9 +9,13 @@
   ],
   "author": "Erik Nielsen <erik@312development.com>",
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/generate-tests#readme",
-  "license": "ISC",
-  "main": "dist/generate-tests.js",
-  "module": "dist/generate-tests.js",
+  "license": "MIT",
+  "main": "dist/cjs/generate-tests.js",
+  "types": "dist/cjs/generate-tests.d.js",
+  "exports": {
+    "import": "./dist/generate-tests.js",
+    "require": "./dist/cjs/generate-tests.js"
+  },
   "files": [
     "bin",
     "dist"
@@ -29,9 +33,10 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "prepublishOnly": "npm run build",
-    "clean": "rm -rf dist/",
-    "prebuild": "npm run clean",
-    "build": "tsc --project tsconfig.json"
+    "prebuild": "rm -rf dist/",
+    "build:mjs": "tsc --project tsconfig.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:mjs && npm run build:cjs"
   },
   "dependencies": {
     "commander": "^10.0.0",
