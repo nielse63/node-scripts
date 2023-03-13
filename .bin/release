@@ -1,9 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
-npx lerna bootstrap
-npx lerna link
+# pre-release checks
 npm run build
 npm run lint
 npm test
-npx lerna publish
+
+# release
+npx release-it
+tag=$(git describe)
+npm version $tag --workspaces --no-git-tag-version
+npm publish --workspaces
