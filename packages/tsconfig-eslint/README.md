@@ -7,7 +7,7 @@
 ## Installation
 
 ```bash
-npx install-peerdeps --dev @nielse63/eslint-config
+npx install-peerdeps --dev @nielse63/tsconfig-eslint
 ```
 
 ## Usage
