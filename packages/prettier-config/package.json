@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/prettier-config",
-  "version": "0.0.4",
+  "version": "1.0.0-alpha.1",
   "description": "Shared prettier config",
   "keywords": [
     "prettier",
