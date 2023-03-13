@@ -3,7 +3,6 @@ const fg = require('fast-glob');
 const uniq = require('lodash/uniq');
 const kebabCase = require('lodash/kebabCase');
 const cp = require('child_process');
-const { version } = require('../lerna.json');
 
 const templates = path.resolve(__dirname, '../.bin/templates');
 const packages = path.resolve(__dirname, '../packages');
@@ -85,7 +84,7 @@ module.exports = (plop) => {
           templateFile: file,
           abortOnFail: true,
           data: {
-            version,
+            version: '0.0.1',
             keywords: uniq(keywords)
               .map((keyword) => `"${keyword}"`)
               .join(',\n    '),
