@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/nielse63/node-scripts#readme",
   "engines": {
-    "node": "^v16.19.1",
+    "node": "^16.19.1",
     "npm": "^8.19.3"
   },
   "devDependencies": {

@@ -1,6 +1,6 @@
 # node-scripts
 
-![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nielse63/node-scripts/node.js.yml?style=for-the-badge) ![Depfu](https://img.shields.io/depfu/dependencies/github/nielse63/node-scripts?style=for-the-badge) ![Codecov](https://img.shields.io/codecov/c/github/nielse63/node-scripts?style=for-the-badge) ![GitHub issues](https://img.shields.io/github/issues-raw/nielse63/node-scripts?style=for-the-badge) ![GitHub](https://img.shields.io/github/license/nielse63/node-scripts?style=for-the-badge)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nielse63/node-scripts/node.js.yml?style=for-the-badge) ![Depfu](https://img.shields.io/depfu/dependencies/github/nielse63/node-scripts?style=for-the-badge) ![Codecov](https://img.shields.io/codecov/c/github/nielse63/node-scripts?style=for-the-badge) ![GitHub issues by-label](https://img.shields.io/github/issues-raw/nielse63/node-scripts/bug?label=open%20issues&style=for-the-badge) ![GitHub](https://img.shields.io/github/license/nielse63/node-scripts?style=for-the-badge)
 
 > Collection of useful node scripts and utilities
 
