@@ -18,3 +18,12 @@ import exec from '@nielse63/exec';
 const output = await exec('echo "howdy!"');
 // "howdy!"
 ```
+
+Or CommonJS:
+
+```js
+const exec = require('@nielse63/exec');
+
+const output = await exec('echo "howdy!"');
+// "howdy!"
+```
