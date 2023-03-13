@@ -25,21 +25,23 @@
     "name": "Erik Nielsen",
     "email": "erik@312development.com"
   },
-  "license": "Apache License 2.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/nielse63/node-scripts/issues"
   },
   "homepage": "https://github.com/nielse63/node-scripts#readme",
   "engines": {
-    "node": ">=16.19.1",
-    "npm": ">=8"
+    "node": "^v16.19.1",
+    "npm": "^8.19.3"
   },
   "devDependencies": {
     "@babel/core": "^7.21.0",
     "@babel/preset-env": "^7.20.2",
     "@babel/preset-typescript": "^7.21.0",
+    "@commitlint/cli": "^17.4.4",
+    "@commitlint/config-conventional": "^17.4.4",
     "@nielse63/eslint-config": "file:packages/eslint-config",
-    "@nielse63/exec": "^1.0.5",
+    "@nielse63/exec": "file:packages/exec",
     "@nielse63/prettier-config": "file:packages/prettier-config",
     "@nielse63/tsconfig": "file:packages/tsconfig",
     "@nielse63/tsconfig-eslint": "file:packages/tsconfig-eslint",
@@ -58,6 +60,7 @@
     "eslint-plugin-prettier": "^4.2.1",
     "fast-glob": "^3.2.12",
     "fs-extra": "^11.1.0",
+    "generate-changelog": "^1.8.0",
     "husky": "^8.0.3",
     "jest": "^29.5.0",
     "jest-extended": "^3.2.4",

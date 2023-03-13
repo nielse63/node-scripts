@@ -8,6 +8,6 @@ _Link to open issues_
 
 ## Checklists
 
+- [ ] `npm run build`
 - [ ] `npm run lint`
 - [ ] `npm test`
-- [ ] `npm run build`

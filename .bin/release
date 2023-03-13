@@ -17,18 +17,18 @@ npm test
 echo ""
 echo -n "Version: "
 read -r tag
-echo ""
 
 # create git tag
 git tag "v$tag" -m "Release v$tag"
-git push origin "v$tag"
 
 # publish to npm
 npm version "$tag" --workspaces --no-git-tag-version --include-workspace-root
 git add .
 git commit -m "Release v$tag"
-git push
 npm publish --workspaces
 
+# push to repo
+git push --follow-tags
+
 # create a github release
-gh release create --draft
+ gh release create "v$tag" --generate-notes
