@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/tsconfig",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.1",
   "description": "Shared TypeScript config for basic projects",
   "keywords": [
     "typescript",

@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/tsconfig-eslint",
-  "version": "1.0.0-alpha.1",
+  "version": "1.0.1",
   "description": "Shareable TypeScript config to be used with ESLint",
   "keywords": [
     "typescript",
