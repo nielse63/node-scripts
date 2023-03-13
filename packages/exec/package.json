@@ -10,11 +10,17 @@
   "author": "Erik Nielsen <erik@312development.com>",
   "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/exec#readme",
   "license": "MIT",
-  "main": "dist/cjs/index.js",
-  "types": "dist/cjs/index.d.js",
   "exports": {
-    "import": "./dist/index.js",
-    "require": "./dist/cjs/index.js"
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      }
+    }
   },
   "files": [
     "dist"

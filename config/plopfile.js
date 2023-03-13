@@ -25,7 +25,6 @@ module.exports = (plop) => {
       args.push(...devDependencies, '--save-dev');
     }
     args.push('--workspace', path.relative(root, cwd));
-    console.log(`npm ${args.join(' ')}`);
     return new Promise((resolve, reject) => {
       cp.execFile('npm', args, { cwd: root }, (error, stdout, stderr) => {
         if (error) {
@@ -33,6 +32,24 @@ module.exports = (plop) => {
         }
         resolve(stdout);
       });
+    });
+  });
+
+  plop.setActionType('prettier', function (_, config) {
+    const { path: cwd } = config;
+    console.log(`npx prettier --write ${cwd}`);
+    return new Promise((resolve, reject) => {
+      cp.execFile(
+        'npx',
+        ['npx', 'prettier', '--write', cwd],
+        { cwd: root },
+        (error, stdout, stderr) => {
+          if (error) {
+            return reject(stderr);
+          }
+          resolve(stdout);
+        }
+      );
     });
   });
 
@@ -107,6 +124,12 @@ module.exports = (plop) => {
           }
         );
       }
+
+      // run prettier
+      actions.push({
+        type: 'prettier',
+        path: path.join(packages, kebabCase(data.name)),
+      });
 
       return actions;
     },
