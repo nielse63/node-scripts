@@ -16,6 +16,7 @@ const trash = async (filepath) => {
     const basename = path.basename(filepath);
     const extension = path.extname(basename);
     const filename = basename.replace(new RegExp(`${extension}$`), '');
+    const random = Math.floor(Math.random() * 10000);
     let newName = path.join(
       TRASH_PATH,
       filename + '_' + Date.now() + `_${random}` + extension
