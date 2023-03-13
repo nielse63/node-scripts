@@ -13,7 +13,6 @@ function release() {
   fi
 
   changes=$(git status --porcelain)
-  echo "changes: $changes"
   if [ "$changes" != "" ]; then
     echo "Working directory is not clean"
     exit 1
@@ -43,7 +42,7 @@ function release() {
   fi
 
   # create git tag
-  git tag "v$tag" -m "Release v$tag"
+  git tag "v$tag" -m "chore(release): v$tag"
 
   # generate changelog
   npx generate-changelog --allow-unknown
