@@ -1,49 +1,49 @@
-# `@nielse63/{{name}}`
+# node-scripts
 
-> {{description}}
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/nielse63/node-scripts/node.js.yml?style=for-the-badge) ![Depfu](https://img.shields.io/depfu/dependencies/github/nielse63/node-scripts?style=for-the-badge) ![Codecov](https://img.shields.io/codecov/c/github/nielse63/node-scripts?style=for-the-badge) ![GitHub issues by-label](https://img.shields.io/github/issues-raw/nielse63/node-scripts/bug?label=open%20issues&style=for-the-badge) ![GitHub](https://img.shields.io/github/license/nielse63/node-scripts?style=for-the-badge)
 
-![npm (scoped)](https://img.shields.io/npm/v/@nielse63/{{name}}?style=for-the-badge)
-![npm](https://img.shields.io/npm/dt/@nielse63/{{name}}?style=for-the-badge)
-![GitHub issues by-label](https://img.shields.io/github/issues/nielse63/node-scripts/{{name}}?style=for-the-badge)
+> Collection of useful node scripts and utilities
 
-## Installation
+## Packages
+
+{{packagesList}}
+
+## Usage
+
+Install the individual package or packages you want to use in your project. See the [packages](#packages) for individual usage and documentation.
+
+## Contributing
+
+### Setting Up
 
 ```bash
-npm install --save @nielse63/{{name}}
+git clone https://github.com/nielse63/node-scripts.git
+cd node-scripts
+nvm use
+npm ci
+
+# create a new branch
+git checkout scratch/my-awesome-feature
 ```
 
-## Usage{{#if cli}}
+### Development
 
-### CLI
+Make your desired changes and run the tests:
 
 ```bash
-$ {{name}} --help
-
-Usage: {{name}} [options] <arguments>
-
-{{description}}
-
-Arguments:
-  ...
-
-Options:
-  -V, --version  output the version number
-  -h, --help     display help for command
-```{{/if}}
-
-### API
-
-```js
-import {{camelCase name}} from '@nielse63/{{name}}';
-
-const results = await {{camelCase name}}({
-  // ...
-});
-
-// results:
-// [
-//    {
-//      // ...
-//    }
-//  ]
+npm run build
+npm run lint
+npm test
 ```
+
+The commit and push the changes to your branch and open a new pull request.
+
+### Releasing
+
+```bash
+npm run release
+```
+
+## Roadmap
+
+See GitHub issues: [https://github.com/nielse63/node-scripts/issues](https://github.com/nielse63/node-scripts/issues).

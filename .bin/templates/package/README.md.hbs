@@ -1,0 +1,49 @@
+# `@nielse63/{{name}}`
+
+> {{description}}
+
+![npm (scoped)](https://img.shields.io/npm/v/@nielse63/{{name}}?style=for-the-badge)
+![npm](https://img.shields.io/npm/dt/@nielse63/{{name}}?style=for-the-badge)
+![GitHub issues by-label](https://img.shields.io/github/issues/nielse63/node-scripts/{{name}}?style=for-the-badge)
+
+## Installation
+
+```bash
+npm install --save @nielse63/{{name}}
+```
+
+## Usage{{#if cli}}
+
+### CLI
+
+```bash
+$ {{name}} --help
+
+Usage: {{name}} [options] <arguments>
+
+{{description}}
+
+Arguments:
+  ...
+
+Options:
+  -V, --version  output the version number
+  -h, --help     display help for command
+```{{/if}}
+
+### API
+
+```js
+import {{camelCase name}} from '@nielse63/{{name}}';
+
+const results = await {{camelCase name}}({
+  // ...
+});
+
+// results:
+// [
+//    {
+//      // ...
+//    }
+//  ]
+```

@@ -4,7 +4,7 @@ const pkg = require('../package.json');
 const { default: generateTests } = require('../dist/cjs');
 
 program
-  .option('-V, --verbose', 'Print debug output', false)
+  .option('-v, --verbose', 'Print debug output', false)
   .option('-D, --cwd', 'Current working directory', process.cwd())
   .argument('<glob>', 'Glob pattern of source files')
   .description(pkg.description)

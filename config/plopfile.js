@@ -4,13 +4,13 @@ const uniq = require('lodash/uniq');
 const kebabCase = require('lodash/kebabCase');
 const cp = require('child_process');
 
-const templates = path.resolve(__dirname, '../.bin/templates');
+const templates = path.resolve(__dirname, '../.bin/templates/package');
 const packages = path.resolve(__dirname, '../packages');
 
 module.exports = (plop) => {
   /** @type {import('plop').NodePlopAPI} */
 
-  plop.setActionType('npmInstall', function (_, config) {
+  plop.setActionType('npmInstall', (_, config) => {
     const {
       dependencies = [],
       devDependencies = [],
@@ -35,14 +35,13 @@ module.exports = (plop) => {
     });
   });
 
-  plop.setActionType('prettier', function (_, config) {
+  plop.setActionType('prettier', (_, config) => {
     const { path: cwd } = config;
     console.log(`npx prettier --write ${cwd}`);
     return new Promise((resolve, reject) => {
       cp.execFile(
         'npx',
         ['npx', 'prettier', '--write', cwd],
-        { cwd: root },
         (error, stdout, stderr) => {
           if (error) {
             return reject(stderr);
@@ -53,7 +52,7 @@ module.exports = (plop) => {
     });
   });
 
-  plop.setGenerator('generator', {
+  plop.setGenerator('package', {
     description: 'Generate a new package',
     prompts: [
       {

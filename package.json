@@ -9,9 +9,10 @@
     "prepare": "husky install",
     "build": "npm run build --if-present --workspaces",
     "postbuild": ".bin/post-build.js",
-    "generate": "plop --plopfile config/plopfile.js",
+    "generate": "plop package --plopfile config/plopfile.js",
     "clean": ".bin/clean.js",
-    "update": ".bin/update-deps.js"
+    "update": ".bin/update-deps.js",
+    "docs": ".bin/docs.js"
   },
   "repository": {
     "type": "git",
@@ -53,6 +54,7 @@
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "babel-jest": "^29.5.0",
+    "docsify-cli": "^4.4.4",
     "eslint": "^8.36.0",
     "eslint-config-airbnb-typescript": "^17.0.0",
     "eslint-config-prettier": "^8.7.0",
