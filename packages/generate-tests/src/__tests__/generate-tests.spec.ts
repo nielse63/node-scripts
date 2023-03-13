@@ -4,8 +4,7 @@ import os from 'os';
 import path from 'path';
 import generateTests, { defaults, GenerateTests } from '../generate-tests';
 
-// const root = path.resolve(os.tmpdir(), 'node-script-tests/generate-tests');
-const root = path.resolve(os.homedir(), 'git/generate-tests-tests');
+const root = path.resolve(os.homedir(), '.cache/generate-tests-tests');
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
@@ -27,7 +26,7 @@ const exec = async (cmd = ''): Promise<string> => {
 
 describe('generate-tests', () => {
   let cwd: string;
-  beforeAll(() => {
+  beforeAll(async () => {
     cwd = process.env.JEST_STARTING_PWD || process.cwd();
   });
 
@@ -68,7 +67,7 @@ describe('generate-tests', () => {
 
     it('should generate test files', async () => {
       expect(fs.existsSync(testfile)).toBeFalse();
-      await exec(defaults.glob);
+      await exec(`${defaults.glob} --verbose`);
       expect(fs.existsSync(testfile)).toBeTrue();
     });
 

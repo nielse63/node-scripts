@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 const { program } = require('commander');
 const pkg = require('../package.json');
-const { generateTests } = require('../dist/cjs/generate-tests');
+const { default: generateTests } = require('../dist/generate-tests');
 
 program
   .option('-V, --verbose', 'Print debug output', false)

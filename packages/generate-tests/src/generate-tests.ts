@@ -154,7 +154,7 @@ export class GenerateTests {
 export default async (
   options: Options | string = { ...defaults }
 ): Promise<FileObject[]> => {
-  const generateTestst = new GenerateTests(options);
-  const output = await generateTestst.run();
+  const generateTests = new GenerateTests(options);
+  const output = await generateTests.run();
   return output;
 };
