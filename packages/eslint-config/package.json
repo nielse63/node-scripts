@@ -33,10 +33,9 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@nielse63/tsconfig-eslint": "file:../tsconfig-eslint"
+    "@nielse63/tsconfig-eslint": "^1.1.0"
   },
   "peerDependencies": {
-    "@nielse63/tsconfig-eslint": "file:../tsconfig-eslint",
     "@typescript-eslint/eslint-plugin": "^5.54.1",
     "@typescript-eslint/parser": "^5.54.1",
     "eslint": "^8.36.0",
