@@ -3,6 +3,13 @@
  * https://jestjs.io/docs/en/configuration.html
  */
 
+const coverageReporters = ['text-summary'];
+if (process.env.CI) {
+  coverageReporters.push('lcov');
+} else {
+  coverageReporters.push('html');
+}
+
 module.exports = {
   // All imported modules in your tests should be mocked automatically
   // automock: false,
@@ -32,12 +39,7 @@ module.exports = {
   coverageProvider: 'babel',
 
   // A list of reporter names that Jest uses when writing coverage reports
-  coverageReporters: [
-    'html',
-    'text-summary',
-    'lcov',
-    // "json"
-  ],
+  coverageReporters,
 
   // An object that configures minimum threshold enforcement for coverage results
   // coverageThreshold: undefined,
