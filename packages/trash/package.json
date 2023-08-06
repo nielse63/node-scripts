@@ -55,6 +55,7 @@
   },
   "dependencies": {
     "commander": "^10.0.0",
-    "fast-glob": "^3.2.12"
+    "fast-glob": "^3.2.12",
+    "xdg-trashdir": "^3.1.0"
   }
 }

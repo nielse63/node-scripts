@@ -2,8 +2,12 @@ import fg from 'fast-glob';
 import fs from 'fs';
 import os from 'os';
 import path from 'path';
+import xdgTrashdir from 'xdg-trashdir';
 
-const trash = path.join(os.homedir(), '.Trash');
+const trash =
+  process.platform === 'darwin'
+    ? path.join(os.homedir(), '.Trash')
+    : await xdgTrashdir();
 
 export type Options = {
   cwd?: string;
