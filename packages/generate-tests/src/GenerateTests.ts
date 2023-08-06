@@ -14,13 +14,12 @@ export interface FileObject {
 }
 
 export interface Options {
-  cwd: string;
+  cwd?: string;
   glob?: string;
   verbose?: boolean;
 }
 
 export const defaults = {
-  cwd: process.cwd(),
   glob: '**/src/**.{js,ts}',
   verbose: false,
 };
@@ -44,7 +43,7 @@ export class GenerateTests {
             ...defaults,
             ...options,
           };
-    this.cwd = config.cwd;
+    this.cwd = config.cwd || process.cwd();
     this.glob = config.glob;
     this.verbose = config.verbose;
     this.fileobjects = [];
@@ -61,7 +60,7 @@ export class GenerateTests {
     return this.fileobjects;
   }
 
-  debug(message = ''): void {
+  debug(message: string): void {
     if (this.verbose) {
       console.debug(message);
     }

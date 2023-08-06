@@ -1,4 +1,3 @@
-import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
@@ -10,20 +9,10 @@ const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
 const gitignoreFile = path.join(root, '.gitignore');
-const testfile = path.join(srcdir, '__tests__/file.spec.js');
 const srccontent = `export default () => {}`;
 const gitignoreContent = `ignored_dir
 
 # ignore this line`;
-
-const exec = async (cmd = ''): Promise<string> => {
-  const binpath = path.resolve(__dirname, '../../bin/generate-tests.js');
-  return new Promise((resolve) => {
-    cp.execFile(binpath, [...cmd.split(' ')], (error, stdout) => {
-      resolve(`${stdout}`.trim());
-    });
-  });
-};
 
 describe('generate-tests', () => {
   let cwd: string;
