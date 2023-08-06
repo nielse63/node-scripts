@@ -1,0 +1,60 @@
+{
+  "name": "@nielse63/trash",
+  "version": "0.0.1",
+  "description": "Move files to trash (instead of rm -rf)",
+  "keywords": [
+    "trash",
+    "cli",
+    "rimraf",
+    "helpers",
+    "utils",
+    "utility",
+    "utilities"
+  ],
+  "author": "Erik Nielsen <erik@312development.com>",
+  "homepage": "https://github.com/nielse63/node-scripts/tree/main/packages/trash#readme",
+  "license": "MIT",
+  "main": "./dist/cjs/index.js",
+  "exports": {
+    ".": {
+      "import": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "require": {
+        "types": "./dist/cjs/index.d.ts",
+        "default": "./dist/cjs/index.js"
+      },
+      "default": "./dist/index.js"
+    }
+  },
+  "files": [
+    "cli.js",
+    "dist"
+  ],
+  "bin": {
+    "trash": "./cli.js"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/nielse63/node-scripts.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
+  "scripts": {
+    "test": "echo \"Error: run tests from root\" && exit 1",
+    "prepublishOnly": "npm run build",
+    "prebuild": "rm -rf dist/",
+    "build:mjs": "tsc --project tsconfig.json",
+    "build:cjs": "tsc --project tsconfig.cjs.json",
+    "build": "npm run build:mjs && npm run build:cjs"
+  },
+  "dependencies": {
+    "commander": "^10.0.0",
+    "fast-glob": "^3.2.12"
+  }
+}

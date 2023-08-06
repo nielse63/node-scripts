@@ -51,7 +51,7 @@ describe('generate-tests', () => {
 
   it('should create test files', async () => {
     expect(fs.existsSync(testfile)).toBeFalse();
-    await generateTests({ cwd: root, verbose: true });
+    await generateTests({ cwd: root });
     expect(fs.existsSync(testfile)).toBeTrue();
   });
 
@@ -81,7 +81,7 @@ describe('generate-tests', () => {
   describe('#debug', () => {
     let spy;
     beforeEach(() => {
-      spy = jest.spyOn(console, 'debug');
+      spy = jest.spyOn(console, 'debug').mockImplementation();
     });
 
     afterEach(() => {
