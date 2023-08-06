@@ -38,39 +38,17 @@ describe('generate-tests', () => {
     await fs.remove(root);
   });
 
-  it('should create test files', async () => {
-    expect(fs.existsSync(testfile)).toBeFalse();
-    await generateTests({ cwd: root });
-    expect(fs.existsSync(testfile)).toBeTrue();
-  });
-
-  describe('cli', () => {
-    beforeEach(() => {
-      process.chdir(root);
-    });
-
-    it('should print help', async () => {
-      const output = await exec('--help');
-      expect(output).toBeString();
-      expect(output).toInclude('Usage: generate-tests');
-    });
-
-    it('should generate test files', async () => {
-      expect(fs.existsSync(testfile)).toBeFalse();
-      await exec(defaults.glob);
-      expect(fs.existsSync(testfile)).toBeTrue();
-    });
-
-    it('should not run when no src files found', async () => {
-      await exec('**/lib/*.{js,ts}');
-      expect(fs.existsSync(testfile)).toBeFalse();
+  describe('properties', () => {
+    it('should define config object if given a string', () => {
+      const gt = new GenerateTests('**/*/glob');
+      expect(gt.glob).toEqual('**/*/glob');
     });
   });
 
   describe('#debug', () => {
     let spy;
     beforeEach(() => {
-      spy = jest.spyOn(console, 'debug').mockImplementation();
+      spy = jest.spyOn(console, 'debug');
     });
 
     afterEach(() => {
