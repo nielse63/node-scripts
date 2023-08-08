@@ -18,9 +18,10 @@ export type ReturnObject = {
 };
 
 export const getTrashPath = async () => {
-  return process.platform === 'darwin'
-    ? path.join(os.homedir(), '.Trash')
-    : xdgTrashdir();
+  if (process.platform === 'darwin') {
+    return path.join(os.homedir(), '.Trash');
+  }
+  return xdgTrashdir();
 };
 
 // source: https://github.com/sindresorhus/is-path-inside/blob/main/index.js

@@ -86,21 +86,25 @@ describe('trash', () => {
     });
 
     it('should print error and return cwd value does not exist', async () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation();
+      const spy = jest.spyOn(log, 'error').mockImplementation();
       await main(['tmp.txt'], {
         cwd: '/path/to/nowhere',
       });
       expect(spy).toHaveBeenCalledWith(
-        '/path/to/nowhere does not exist - exiting'
+        'trash',
+        `cwd '/path/to/nowhere' does not exist - exiting`
       );
     });
 
     it('should print error and return if trash directory doesnt exist', async () => {
-      const spy = jest.spyOn(console, 'error').mockImplementation();
+      const spy = jest.spyOn(log, 'error').mockImplementation();
       await main(['tmp.txt'], {
         trash: 'fake',
       });
-      expect(spy).toHaveBeenCalledWith('fake does not exist - exiting');
+      expect(spy).toHaveBeenCalledWith(
+        'trash',
+        `trash 'fake' does not exist - exiting`
+      );
     });
 
     it('should remove files', async () => {
