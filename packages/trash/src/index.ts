@@ -82,13 +82,13 @@ export const main = async (
 
   // check that cwd value is a valid directory
   if (!fs.existsSync(config.cwd)) {
-    log.error('trash', `${config.cwd} does not exist - exiting`);
+    log.error('trash', `cwd '${config.cwd}' does not exist - exiting`);
     return;
   }
 
   // check that trash directory exists - only works on mac
   if (!fs.existsSync(config.trash)) {
-    log.error('trash', `${config.trash} does not exist - exiting`);
+    log.error('trash', `trash '${config.trash}' does not exist - exiting`);
     return;
   }
 
