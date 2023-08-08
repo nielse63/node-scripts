@@ -25,7 +25,6 @@ Arguments:
   glob           Glob pattern of source files
 
 Options:
-  -v, --verbose  Print debug output (default: false)
   -D, --cwd      Current working directory
   -V, --version  output the version number
   -h, --help     display help for command
@@ -39,7 +38,6 @@ import generateTests from '@nielse63/generate-tests';
 const results = await generateTests({
   cwd: '/path/to/project',
   glob: '**/src/**.{js,ts}',
-  verbose: true,
 });
 
 // results:

@@ -2,8 +2,12 @@ import fg from 'fast-glob';
 import fs from 'fs-extra';
 import gitignore, { Ignore } from 'ignore';
 import camelCase from 'lodash/camelCase';
+import log from 'npmlog';
 import os from 'os';
 import path from 'path';
+
+log.enableColor();
+log.heading = 'generate-tests';
 
 export interface FileObject {
   file: string;
@@ -16,18 +20,15 @@ export interface FileObject {
 export interface Options {
   cwd?: string;
   glob?: string;
-  verbose?: boolean;
 }
 
 export const defaults = {
   glob: '**/src/**.{js,ts}',
-  verbose: false,
 };
 
 export class GenerateTests {
   cwd: string;
   glob: string;
-  verbose: boolean;
   fileobjects: FileObject[];
   ignoredPatterns: string[];
   ignore: Ignore;
@@ -45,7 +46,6 @@ export class GenerateTests {
           };
     this.cwd = config.cwd || process.cwd();
     this.glob = config.glob;
-    this.verbose = config.verbose;
     this.fileobjects = [];
     this.ignoredPatterns = [];
     this.ignore = gitignore();
@@ -56,14 +56,7 @@ export class GenerateTests {
     this.fileobjects = this.createFileObjects(files);
     await this.ensureFiles();
     await this.writeFiles();
-    this.debug('Generated test files');
     return this.fileobjects;
-  }
-
-  debug(message: string): void {
-    if (this.verbose) {
-      console.debug(message);
-    }
   }
 
   async findGitignoreFiles(filepath = this.cwd): Promise<string[]> {
@@ -89,7 +82,6 @@ export class GenerateTests {
       ignore: ['**/node_modules', '**/flow-typed', '**/coverage', '**/.git'],
     });
     const filteredFiles = files.filter((file) => !this.ignore.ignores(file));
-    this.debug(`files: \n  ${filteredFiles.join('  \n')}`);
     return filteredFiles;
   }
 
@@ -113,10 +105,9 @@ export class GenerateTests {
           !fs.existsSync(testpath) && classname !== 'index'
       );
     if (!fileobjects.length) {
-      this.debug('No tests to generate');
+      log.warn('generate-tests', 'No tests to generate');
       return [];
     }
-    this.debug(`fileobjects: \n  ${fileobjects.join('  \n')}`);
     return fileobjects;
   }
 

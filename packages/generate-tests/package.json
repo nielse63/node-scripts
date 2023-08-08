@@ -38,6 +38,9 @@
     "type": "git",
     "url": "git+https://github.com/nielse63/node-scripts.git"
   },
+  "bugs": {
+    "url": "https://github.com/nielse63/node-scripts/issues"
+  },
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "prepublishOnly": "npm run build",
@@ -51,9 +54,10 @@
     "fast-glob": "^3.3.1",
     "fs-extra": "^11.1.1",
     "ignore": "^5.2.4",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "npmlog": "^7.0.1"
   },
-  "bugs": {
-    "url": "https://github.com/nielse63/node-scripts/issues"
+  "devDependencies": {
+    "@types/npmlog": "^4.1.4"
   }
 }

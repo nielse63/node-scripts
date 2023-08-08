@@ -1,4 +1,5 @@
 import fs from 'fs';
+import log from 'npmlog';
 import os from 'os';
 import path from 'path';
 import { isPathInside, main, rand, trashItem } from '..';
@@ -49,9 +50,9 @@ describe('trash', () => {
 
   describe('trashItem', () => {
     it('should print debug statement and return if given file isnt found', async () => {
-      const spy = jest.spyOn(console, 'debug').mockImplementation();
+      const spy = jest.spyOn(log, 'warn').mockImplementation();
       await trashItem('fake.txt');
-      expect(spy).toHaveBeenCalledWith('fake.txt does not exist');
+      expect(spy).toHaveBeenCalledWith('trash', 'fake.txt does not exist');
     });
   });
 

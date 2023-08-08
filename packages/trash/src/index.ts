@@ -1,13 +1,12 @@
 import fg from 'fast-glob';
 import fs from 'fs';
+import log from 'npmlog';
 import os from 'os';
 import path from 'path';
 import xdgTrashdir from 'xdg-trashdir';
 
-const trash =
-  process.platform === 'darwin'
-    ? path.join(os.homedir(), '.Trash')
-    : await xdgTrashdir();
+log.enableColor();
+log.heading = 'trash';
 
 export type Options = {
   cwd?: string;
@@ -16,6 +15,12 @@ export type Options = {
 export type ReturnObject = {
   src: string;
   dest: string;
+};
+
+export const getTrashPath = async () => {
+  return process.platform === 'darwin'
+    ? path.join(os.homedir(), '.Trash')
+    : xdgTrashdir();
 };
 
 // source: https://github.com/sindresorhus/is-path-inside/blob/main/index.js
@@ -45,17 +50,18 @@ export const rand = (length = 8) => {
 
 export const trashItem = async (
   filepath: string,
-  trashPath = trash
+  trashPath: string
 ): Promise<ReturnObject | undefined> => {
+  const trash = trashPath || (await getTrashPath());
   if (!fs.existsSync(filepath)) {
-    console.debug(`${filepath} does not exist`);
+    log.warn('trash', `${filepath} does not exist`);
     return;
   }
   const basename = path.basename(filepath);
   const extension = path.extname(filepath);
   const basenameNoExtension = basename.replace(new RegExp(`${extension}$`), '');
   const newBasename = `${basenameNoExtension}_${Date.now()}_${rand()}${extension}`;
-  const newpath = path.join(trashPath, newBasename);
+  const newpath = path.join(trash, newBasename);
   await fs.promises.rename(filepath, newpath);
   return { src: filepath, dest: newpath };
 };
@@ -67,7 +73,7 @@ export const main = async (
   // define config object
   const config = {
     cwd: options.cwd || process.cwd(),
-    trash: options.trash || trash,
+    trash: options.trash || (await getTrashPath()),
   };
 
   // check that cwd value is a valid directory

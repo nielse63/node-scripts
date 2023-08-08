@@ -1,10 +1,9 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
-import { defaults, GenerateTests } from '../GenerateTests';
-import generateTests from '../index';
+import { GenerateTests } from '../GenerateTests';
 
-const root = path.resolve(os.homedir(), '.cache/generate-tests-tests');
+const root = path.resolve(os.tmpdir(), 'node-scripts/generate-tests');
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
@@ -42,27 +41,6 @@ describe('generate-tests', () => {
     it('should define config object if given a string', () => {
       const gt = new GenerateTests('**/*/glob');
       expect(gt.glob).toEqual('**/*/glob');
-    });
-  });
-
-  describe('#debug', () => {
-    let spy;
-    beforeEach(() => {
-      spy = jest.spyOn(console, 'debug');
-    });
-
-    afterEach(() => {
-      jest.clearAllMocks();
-    });
-
-    it('should call debug only when specified', async () => {
-      await generateTests({ cwd: root, glob: defaults.glob, verbose: true });
-      expect(spy).toHaveBeenCalled();
-    });
-
-    it('should not call debug when not in config', async () => {
-      await generateTests({ cwd: root });
-      expect(spy).not.toHaveBeenCalled();
     });
   });
 
