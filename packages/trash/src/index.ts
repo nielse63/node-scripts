@@ -50,7 +50,7 @@ export const rand = (length = 8) => {
 
 export const trashItem = async (
   filepath: string,
-  trashPath: string
+  trashPath?: string
 ): Promise<ReturnObject | undefined> => {
   const trash = trashPath || (await getTrashPath());
   if (!fs.existsSync(filepath)) {
@@ -62,7 +62,11 @@ export const trashItem = async (
   const basenameNoExtension = basename.replace(new RegExp(`${extension}$`), '');
   const newBasename = `${basenameNoExtension}_${Date.now()}_${rand()}${extension}`;
   const newpath = path.join(trash, newBasename);
-  await fs.promises.rename(filepath, newpath);
+  try {
+    await fs.promises.rename(filepath, newpath);
+  } catch (error: unknown) {
+    log.error('trash', `${error}`);
+  }
   return { src: filepath, dest: newpath };
 };
 
@@ -78,13 +82,13 @@ export const main = async (
 
   // check that cwd value is a valid directory
   if (!fs.existsSync(config.cwd)) {
-    console.error(`${config.cwd} does not exist - exiting`);
+    log.error('trash', `${config.cwd} does not exist - exiting`);
     return;
   }
 
   // check that trash directory exists - only works on mac
   if (!fs.existsSync(config.trash)) {
-    console.error(`${config.trash} does not exist - exiting`);
+    log.error('trash', `${config.trash} does not exist - exiting`);
     return;
   }
 
