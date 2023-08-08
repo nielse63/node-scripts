@@ -52,6 +52,9 @@ module.exports = {
         'plugin:@typescript-eslint/recommended',
         'plugin:import/typescript',
       ],
+      rules: {
+        '@typescript-eslint/ban-ts-comment': 'warn',
+      },
     },
   ],
 };
