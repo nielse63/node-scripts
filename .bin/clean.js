@@ -7,6 +7,7 @@ const pkg = require('../package.json');
 const trash = require('./helpers/trash');
 
 const packageLock = process.argv.includes('--package-lock');
+const dryRun = process.argv.includes('--dry-run');
 
 // paths
 const root = path.resolve(__dirname, '../');
@@ -47,6 +48,13 @@ const getPaths = async () => {
 
 const main = async () => {
   const paths = await getPaths();
+  if (dryRun) {
+    console.log('To be deleted:');
+    paths.forEach((filepath) => {
+      console.log(filepath);
+    });
+    return;
+  }
   await Promise.all(paths.map(trash));
 };
 

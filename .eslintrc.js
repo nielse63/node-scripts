@@ -8,4 +8,12 @@ module.exports = {
       { devDependencies: ['**/*.test.ts', '**/*.spec.ts', '*.d.ts'] },
     ],
   },
+  overrides: [
+    {
+      files: ['.bin/**/*'],
+      rules: {
+        'import/no-extraneous-dependencies': 'off',
+      },
+    },
+  ],
 };

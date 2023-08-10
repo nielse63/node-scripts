@@ -50,7 +50,7 @@
     "build": "npm run build:mjs && npm run build:cjs"
   },
   "dependencies": {
-    "commander": "^10.0.1",
+    "commander": "^11.0.0",
     "fast-glob": "^3.3.1",
     "fs-extra": "^11.1.1",
     "ignore": "^5.2.4",

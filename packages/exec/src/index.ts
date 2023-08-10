@@ -5,14 +5,17 @@ const execPromise = util.promisify(cp.exec);
 
 const exec = async (cmd: string, options = {}): Promise<string> => {
   try {
-    const { stdout } = await execPromise(cmd, {
+    const { stdout, stderr } = await execPromise(cmd, {
       cwd: process.cwd(),
       ...options,
     });
-    return stdout.trim();
-  } catch (error: unknown) {
-    // @ts-expect-error: error is of string | undefined type
-    return Promise.reject(new Error(error));
+    return `${stdout}${stderr}`.trim();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } catch (error: any) {
+    if (error.stdout) {
+      return `${error.stdout}`.trim();
+    }
+    return Promise.reject(error);
   }
 };
 
