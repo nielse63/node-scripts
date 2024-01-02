@@ -33,8 +33,7 @@
   },
   "homepage": "https://github.com/nielse63/node-scripts#readme",
   "engines": {
-    "node": "^16.20.2",
-    "npm": "^8.19.3"
+    "node": ">=16"
   },
   "devDependencies": {
     "@babel/core": "^7.22.10",
