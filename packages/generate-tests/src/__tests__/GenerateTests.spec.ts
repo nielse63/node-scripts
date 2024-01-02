@@ -1,9 +1,10 @@
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import { v4 as uuid } from 'uuid';
 import { GenerateTests } from '../GenerateTests';
 
-const root = path.resolve(os.tmpdir(), 'node-scripts/generate-tests');
+const root = path.resolve(os.tmpdir(), `node-scripts/generate-tests-${uuid()}`);
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
@@ -59,7 +60,7 @@ describe('generate-tests', () => {
   describe('#createTestTemplate', () => {
     it('should convert kebabCase to snakeCase', () => {
       const template = GenerateTests.createTestTemplate('snake-case');
-      expect(template.includes('import snakeCase')).toBeTrue();
+      expect(template.includes('import snakeCase')).toBeTruthy();
     });
   });
 

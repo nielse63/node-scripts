@@ -58,6 +58,7 @@
     "npmlog": "^7.0.1"
   },
   "devDependencies": {
-    "@types/npmlog": "^4.1.4"
+    "@types/npmlog": "^4.1.4",
+    "uuid": "^9.0.1"
   }
 }

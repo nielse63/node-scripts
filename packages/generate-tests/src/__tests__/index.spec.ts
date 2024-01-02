@@ -2,10 +2,11 @@ import cp from 'child_process';
 import fs from 'fs-extra';
 import os from 'os';
 import path from 'path';
+import { v4 as uuid } from 'uuid';
 import { defaults } from '../GenerateTests';
 import generateTests from '../index';
 
-const root = path.resolve(os.tmpdir(), 'node-scripts/generate-tests');
+const root = path.resolve(os.tmpdir(), `node-scripts/generate-tests-${uuid()}`);
 const srcdir = path.join(root, 'src');
 const packagejson = path.join(root, 'package.json');
 const srcfile = path.join(srcdir, 'file.js');
@@ -27,7 +28,9 @@ const exec = async (cmd = ''): Promise<string> => {
 
 describe('generate-tests', () => {
   let cwd: string;
+
   beforeAll(async () => {
+    await fs.ensureDir(root);
     cwd = process.env.JEST_STARTING_PWD || process.cwd();
   });
 
@@ -50,17 +53,17 @@ describe('generate-tests', () => {
   });
 
   it('should create test files', async () => {
-    expect(fs.existsSync(testfile)).toBeFalse();
+    expect(fs.existsSync(testfile)).toBeFalsy();
     await generateTests({ cwd: root });
-    expect(fs.existsSync(testfile)).toBeTrue();
+    expect(fs.existsSync(testfile)).toBeTruthy();
   });
 
   it('should create test files with default options', async () => {
     const currentCwd = process.cwd();
     process.chdir(root);
-    expect(fs.existsSync(testfile)).toBeFalse();
+    expect(fs.existsSync(testfile)).toBeFalsy();
     await generateTests();
-    expect(fs.existsSync(testfile)).toBeTrue();
+    expect(fs.existsSync(testfile)).toBeTruthy();
     process.chdir(currentCwd);
   });
 
@@ -76,14 +79,14 @@ describe('generate-tests', () => {
     });
 
     it('should generate test files', async () => {
-      expect(fs.existsSync(testfile)).toBeFalse();
+      expect(fs.existsSync(testfile)).toBeFalsy();
       await exec(defaults.glob);
-      expect(fs.existsSync(testfile)).toBeTrue();
+      expect(fs.existsSync(testfile)).toBeTruthy();
     });
 
     it('should not run when no src files found', async () => {
       await exec('**/lib/*.{js,ts}');
-      expect(fs.existsSync(testfile)).toBeFalse();
+      expect(fs.existsSync(testfile)).toBeFalsy();
     });
   });
 });
