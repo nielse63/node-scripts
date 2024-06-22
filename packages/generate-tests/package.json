@@ -50,15 +50,15 @@
     "build": "npm run build:mjs && npm run build:cjs"
   },
   "dependencies": {
-    "commander": "^11.0.0",
-    "fast-glob": "^3.3.1",
-    "fs-extra": "^11.1.1",
-    "ignore": "^5.2.4",
+    "commander": "^11.1.0",
+    "fast-glob": "^3.3.2",
+    "fs-extra": "^11.2.0",
+    "ignore": "^5.3.0",
     "lodash": "^4.17.21",
     "npmlog": "^7.0.1"
   },
   "devDependencies": {
-    "@types/npmlog": "^4.1.4",
+    "@types/npmlog": "^4.1.6",
     "uuid": "^9.0.1"
   }
 }
