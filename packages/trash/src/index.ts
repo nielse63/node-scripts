@@ -12,7 +12,7 @@ export type Options = {
   cwd?: string;
   trash?: string;
 };
-export type ReturnObject = {
+export type TrashItem = {
   src: string;
   dest: string;
 };
@@ -52,7 +52,7 @@ export const rand = (length = 8) => {
 export const trashItem = async (
   filepath: string,
   trashPath?: string
-): Promise<ReturnObject | undefined> => {
+): Promise<TrashItem | undefined> => {
   const trash = trashPath || (await getTrashPath());
   if (!fs.existsSync(filepath)) {
     log.warn('trash', `${filepath} does not exist`);
@@ -74,7 +74,7 @@ export const trashItem = async (
 export const main = async (
   filepaths: string | string[],
   options: Options = {}
-): Promise<ReturnObject[] | undefined> => {
+): Promise<TrashItem[]> => {
   // define config object
   const config = {
     cwd: options.cwd || process.cwd(),
@@ -84,13 +84,13 @@ export const main = async (
   // check that cwd value is a valid directory
   if (!fs.existsSync(config.cwd)) {
     log.error('trash', `cwd '${config.cwd}' does not exist - exiting`);
-    return;
+    return [];
   }
 
   // check that trash directory exists - only works on mac
   if (!fs.existsSync(config.trash)) {
     log.error('trash', `trash '${config.trash}' does not exist - exiting`);
-    return;
+    return [];
   }
 
   // find files
