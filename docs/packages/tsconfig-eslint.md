@@ -19,7 +19,7 @@ Create a file called `tsconfig.eslint.json` in your project root with the follow
   "extends": "@nielse63/tsconfig-eslint",
   // you can customize your include and exclude values
   "include": ["**/*.ts", "**/*.js", ".*.js", ".bin/**/*"],
-  "exclude": ["**/node_modules/**", "**/dist/**"]
+  "exclude": ["**/node_modules/**", "**/dist/**"],
 }
 ```
 
