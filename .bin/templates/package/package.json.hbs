@@ -46,5 +46,8 @@
     "build:mjs": "tsc --project tsconfig.json",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build": "npm run build:mjs && npm run build:cjs"
-  }
+  }{{#if cli}},
+  "dependencies": {
+    "commander": "^11.0.0"
+  }{{/if}}
 }

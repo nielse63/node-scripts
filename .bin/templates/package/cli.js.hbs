@@ -13,4 +13,4 @@ program
 const args = program.processedArgs;
 const options = program.opts();
 
-{{camelCase name}}({ args, { ...options } }).catch(console.error);
+{{camelCase name}}({ args, ...options }).catch(console.error);
