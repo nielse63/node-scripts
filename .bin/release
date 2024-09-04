@@ -20,7 +20,7 @@ function release() {
 
   # pre-release checks
   npm run build
-  npx eslint .
+  npm run lint
   npm test
 
   # read version

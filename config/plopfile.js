@@ -3,6 +3,7 @@ const fg = require('fast-glob');
 const uniq = require('lodash/uniq');
 const kebabCase = require('lodash/kebabCase');
 const cp = require('child_process');
+const { version } = require('../package.json');
 
 const templates = path.resolve(__dirname, '../.bin/templates/package');
 const packages = path.resolve(__dirname, '../packages');
@@ -100,7 +101,7 @@ module.exports = (plop) => {
           templateFile: file,
           abortOnFail: true,
           data: {
-            version: '0.0.1',
+            version,
             keywords: uniq(keywords)
               .map((keyword) => `"${keyword}"`)
               .join(',\n    '),
