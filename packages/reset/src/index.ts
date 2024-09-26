@@ -6,11 +6,11 @@ import log from 'npmlog';
 import path from 'path';
 
 type ResetOptions = {
-  paths?: string;
+  paths?: string | string[];
   config?: string;
 };
 
-const getResetConfig = async (rootDir: string): Promise<string[]> => {
+export const getResetConfig = async (rootDir: string): Promise<string[]> => {
   const explorer = cosmiconfig('reset');
   const response = await explorer.search(rootDir);
   if (!response) {
@@ -41,19 +41,23 @@ export const reset = async (options: ResetOptions) => {
     return;
   }
   let paths: string[] = [];
-  if (options.paths) {
-    paths = await fg(options.paths, {
-      onlyFiles: false,
-      absolute: true,
-      dot: true,
-    });
+  if (options.paths && options.paths.length) {
+    paths =
+      (await fg(options.paths, {
+        onlyFiles: false,
+        absolute: true,
+        dot: true,
+      })) || [];
   }
   if (config) {
     const pathsFromConfig: string[] = await getResetConfig(
       path.dirname(config)
     );
-    paths.push(...pathsFromConfig);
+    if (pathsFromConfig && Array.isArray(pathsFromConfig)) {
+      paths.push(...pathsFromConfig);
+    }
   }
+  paths = [...new Set(paths)];
   if (!paths.length) {
     log.warn('reset', 'No paths found');
     return;
@@ -63,7 +67,8 @@ export const reset = async (options: ResetOptions) => {
     .join('\n');
   log.info('reset', `Removing paths:\n${pathsList}`);
   const deletedFiles = await trash(paths);
-  const trashFiles = deletedFiles?.map(({ dest }) => dest);
+  const trashFiles = deletedFiles?.map(({ dest }) => dest) || [];
+  if (!trashFiles || !trashFiles.length) return;
   cp.spawn('rm', ['-rf', ...trashFiles], {
     detached: true,
     stdio: 'ignore',
