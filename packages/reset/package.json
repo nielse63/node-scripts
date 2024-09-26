@@ -52,7 +52,7 @@
   "scripts": {
     "test": "echo \"Error: run tests from root\" && exit 1",
     "prepublishOnly": "npm run build",
-    "prebuild": "rm -rf dist/",
+    "prebuild": "cd ../trash && npm run build && cd ../reset && rm -rf dist/",
     "build:mjs": "tsc --project tsconfig.json",
     "build:cjs": "tsc --project tsconfig.cjs.json",
     "build": "npm run build:mjs && npm run build:cjs"
