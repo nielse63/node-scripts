@@ -35,10 +35,15 @@ function release() {
     npm version patch
     version=$(grep '"version":' package.json)
     version=${version//  \"version\": \"/}
-    version=${version//\",/}
+    tag=${version//\",/}
     npm version patch --workspaces --no-git-tag-version --include-workspace-root=false
   else
     npm version "$tag" --workspaces --no-git-tag-version --include-workspace-root
+  fi
+
+  if [ ! "$tag" ]; then
+    echo "Invalid version: $tag"
+    exit 1
   fi
 
   # create git tag
