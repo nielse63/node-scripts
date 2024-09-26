@@ -11,6 +11,8 @@
 - [@nielse63/exec](https://github.com/nielse63/node-scripts/blob/main/packages/exec)
 - [@nielse63/generate-tests](https://github.com/nielse63/node-scripts/blob/main/packages/generate-tests)
 - [@nielse63/prettier-config](https://github.com/nielse63/node-scripts/blob/main/packages/prettier-config)
+- [@nielse63/reset](https://github.com/nielse63/node-scripts/blob/main/packages/reset)
+- [@nielse63/trash](https://github.com/nielse63/node-scripts/blob/main/packages/trash)
 - [@nielse63/tsconfig](https://github.com/nielse63/node-scripts/blob/main/packages/tsconfig)
 - [@nielse63/tsconfig-eslint](https://github.com/nielse63/node-scripts/blob/main/packages/tsconfig-eslint)
 
