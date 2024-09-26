@@ -6,7 +6,6 @@ import path from 'path';
 import xdgTrashdir from 'xdg-trashdir';
 
 log.enableColor();
-log.heading = 'trash';
 
 export type Options = {
   cwd?: string;
@@ -52,11 +51,11 @@ export const rand = (length = 8) => {
 export const trashItem = async (
   filepath: string,
   trashPath?: string
-): Promise<TrashItem | undefined> => {
+): Promise<TrashItem> => {
   const trash = trashPath || (await getTrashPath());
   if (!fs.existsSync(filepath)) {
     log.warn('trash', `${filepath} does not exist`);
-    return;
+    return { src: filepath, dest: '' };
   }
   const basename = path.basename(filepath);
   const extension = path.extname(filepath);
@@ -64,6 +63,7 @@ export const trashItem = async (
   const newBasename = `${basenameNoExtension}_${Date.now()}_${rand()}${extension}`;
   const newpath = path.join(trash, newBasename);
   try {
+    log.info('trash', `moving ${filepath} to ${newpath}`);
     await fs.promises.rename(filepath, newpath);
   } catch (error: unknown) {
     log.error('trash', `${error}`);
@@ -80,6 +80,7 @@ export const main = async (
     cwd: options.cwd || process.cwd(),
     trash: options.trash || (await getTrashPath()),
   };
+  const files = Array.isArray(filepaths) ? filepaths.flat() : [filepaths];
 
   // check that cwd value is a valid directory
   if (!fs.existsSync(config.cwd)) {
@@ -94,23 +95,21 @@ export const main = async (
   }
 
   // find files
-  const files = await fg(filepaths, {
+  const foundFiles = await fg(files, {
     cwd: config.cwd,
     absolute: true,
     onlyFiles: false,
   });
 
   // exclude nested paths
-  const parentPaths = files.filter((file) => {
-    return !files.some((otherFile) => isPathInside(file, otherFile));
+  const parentPaths = foundFiles.filter((file) => {
+    return !foundFiles.some((otherFile) => isPathInside(file, otherFile));
   });
-  // .filter((file) => fs.existsSync(file));
   const promises = parentPaths.map((filepath) =>
     trashItem(filepath, config.trash)
   );
   const results = await Promise.all(promises);
-  // @ts-ignore
-  return results.filter(Boolean);
+  return results;
 };
 
 export default main;

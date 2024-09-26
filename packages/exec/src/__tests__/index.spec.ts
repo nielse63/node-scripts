@@ -16,4 +16,9 @@ describe('exec', () => {
   it('should reject on error', async () => {
     await expect(exec('exit 1')).toReject();
   });
+
+  it('should return error.stdout', async () => {
+    const output = await exec('echo "error"; exit 1');
+    expect(output).toEqual('error');
+  });
 });

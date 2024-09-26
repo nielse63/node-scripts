@@ -24,6 +24,7 @@ export const getResetConfig = async (rootDir: string): Promise<string[]> => {
     if (/^[a-zA-Z]/.test(p)) {
       return `**/${p}`;
     }
+    return p;
   });
   const output = await fg(patterns, {
     onlyFiles: false,
