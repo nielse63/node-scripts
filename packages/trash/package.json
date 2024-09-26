@@ -60,6 +60,6 @@
     "xdg-trashdir": "^3.1.0"
   },
   "devDependencies": {
-    "@types/npmlog": "^4.1.6"
+    "@types/npmlog": "^7.0.0"
   }
 }
