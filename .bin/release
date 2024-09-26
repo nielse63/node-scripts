@@ -19,8 +19,8 @@ function release() {
   fi
 
   # pre-release checks
-  npm run build
   npm run lint
+  npm run build
   npm test
 
   # read version

@@ -37,8 +37,8 @@
     "@nielse63/tsconfig": "^1.1.5"
   },
   "peerDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.3.0",
-    "@typescript-eslint/parser": "^6.3.0",
-    "typescript": "^5.0.3"
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "typescript": "^5.6.2"
   }
 }
