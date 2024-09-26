@@ -7,7 +7,6 @@ import os from 'os';
 import path from 'path';
 
 log.enableColor();
-log.heading = 'generate-tests';
 
 export interface FileObject {
   file: string;

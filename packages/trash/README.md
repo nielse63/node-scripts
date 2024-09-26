@@ -17,16 +17,21 @@ npm install --save @nielse63/trash
 ```bash
 $ trash --help
 
-Usage: trash [options] <arguments>
+Usage: trash [options] <files...>
 
 Move files to trash (instead of rm -rf)
 
 Arguments:
-  ...
+  files             files/directories to move to trash
 
 Options:
-  -V, --version  output the version number
-  -h, --help     display help for command
+  --cwd <string>    current working directory
+  --trash <string>  path to trash folder
+  -V, --version     output the version number
+  -h, --help        display help for command
+
+Example:
+  trash --cwd custom/working/directory folder1 nested/path/to/file
 ```
 
 ### API
@@ -42,12 +47,12 @@ const results = await trash(['file.md', 'directory'], {
 // results:
 // [
 //   {
-//     "old": "/path/to/file.md",
-//     "new": "/Users/username/.Trash/file_1691311838573_dUGBD6dd.md"
+//     "src": "/path/to/file.md",
+//     "dest": "/Users/username/.Trash/file_1691311838573_dUGBD6dd.md"
 //   },
 //   {
-//     "old": "/path/to/directory",
-//     "new": "/Users/username/.Trash/directory_1691311838573_nsRcsJWf"
+//     "src": "/path/to/directory",
+//     "dest": "/Users/username/.Trash/directory_1691311838573_nsRcsJWf"
 //   }
 // ]
 ```

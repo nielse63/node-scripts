@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -e
+
+pwd=$(pwd)
+cd ../trash
+npm run build
+cd "$pwd"
+rm -rf dist/

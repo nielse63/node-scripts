@@ -2,14 +2,50 @@ import fs from 'fs';
 import log from 'npmlog';
 import os from 'os';
 import path from 'path';
-import { isPathInside, main, rand, trashItem } from '..';
+import xdgTrashdir from 'xdg-trashdir';
+import { getTrashPath, isPathInside, main, rand, trashItem } from '..';
 
+jest.mock('xdg-trashdir');
+
+const homedir = os.homedir();
 const root = path.resolve(os.tmpdir(), '@nielse63/trash');
 const nested = path.join(root, 'nested');
 const tmp1 = path.join(root, 'tmp.txt');
 const tmp2 = path.join(nested, 'tmp.txt');
+const platform = process.platform;
 
 describe('trash', () => {
+  beforeEach(async () => {
+    jest.clearAllMocks();
+  });
+
+  afterEach(() => {
+    Object.defineProperty(process, 'platform', { value: platform });
+  });
+
+  describe('getTrashPath', () => {
+    it('should return the Trash path on macOS (darwin)', async () => {
+      const spy = jest.spyOn(path, 'join');
+      Object.defineProperty(process, 'platform', { value: 'darwin' });
+
+      const result = await getTrashPath();
+      expect(result).toBe(path.join(homedir, '.Trash'));
+      expect(spy).toHaveBeenCalledWith(homedir, '.Trash');
+    });
+
+    it('should return the XDG trash directory on non-macOS platforms', async () => {
+      // @ts-ignore
+      (xdgTrashdir as jest.Mock).mockResolvedValueOnce(
+        '/home/testuser/.local/share/Trash'
+      );
+      Object.defineProperty(process, 'platform', { value: 'linux' });
+
+      const result = await getTrashPath();
+      expect(result).toBe('/home/testuser/.local/share/Trash');
+      expect(xdgTrashdir).toHaveBeenCalled();
+    });
+  });
+
   describe('isPathInside', () => {
     it('should return true if child is inside parent', () => {
       expect(isPathInside(tmp1, root)).toBe(true);

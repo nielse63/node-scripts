@@ -6,7 +6,7 @@ const trash = require('./dist/cjs');
 program
   .option('--cwd <string>', 'current working directory')
   .option('--trash <string>', 'path to trash folder')
-  .argument('<arg>', 'Required arg')
+  .argument('<files...>', 'files/directories to move to trash')
   .description(pkg.description)
   .version(pkg.version)
   .parse(process.argv);
