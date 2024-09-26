@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/eslint-config",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Shared eslint-config ",
   "keywords": [
     "eslint",
@@ -33,7 +33,7 @@
     "test": "echo \"Error: run tests from root\" && exit 1"
   },
   "dependencies": {
-    "@nielse63/tsconfig-eslint": "^1.1.5"
+    "@nielse63/tsconfig-eslint": "^1.1.6"
   },
   "peerDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
