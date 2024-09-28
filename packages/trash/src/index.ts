@@ -71,7 +71,7 @@ export const trashItem = async (
   return { src: filepath, dest: newpath };
 };
 
-export const main = async (
+export const trash = async (
   filepaths: string | string[],
   options: Options = {}
 ): Promise<TrashItem[]> => {
@@ -112,4 +112,4 @@ export const main = async (
   return results;
 };
 
-export default main;
+export default trash;

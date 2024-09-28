@@ -12,11 +12,15 @@ jest.mock('path');
 jest.mock('child_process');
 jest.mock('@nielse63/trash');
 
-describe('reset', () => {
+describe('@nielse63/reset', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+  });
+
   describe('getResetConfig', () => {
     it('should return an empty array if no config is found', async () => {
-      (cosmiconfig as jest.Mock).mockReturnValueOnce({
-        search: jest.fn().mockResolvedValueOnce(null),
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue(null),
       });
       const result = await getResetConfig('/some/root/dir');
       expect(result).toEqual([]);
@@ -24,12 +28,13 @@ describe('reset', () => {
     });
 
     it('should return paths if config is found', async () => {
-      (cosmiconfig as jest.Mock).mockReturnValueOnce({
-        search: jest.fn().mockResolvedValueOnce({
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue({
           config: { paths: ['src', 'test', '123.txt'] },
         }),
       });
-      (fg as unknown as jest.Mock).mockResolvedValueOnce([
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock).mockResolvedValue([
         '/some/root/dir/src',
         '/some/root/dir/test',
         '/some/root/dir/123.txt',
@@ -44,10 +49,6 @@ describe('reset', () => {
   });
 
   describe('reset', () => {
-    beforeEach(() => {
-      jest.clearAllMocks();
-    });
-
     it('should log an error if no paths or config are provided', async () => {
       await reset({});
       expect(log.error).toHaveBeenCalledWith(
@@ -57,8 +58,9 @@ describe('reset', () => {
     });
 
     it('should handle provided paths', async () => {
-      (fg as unknown as jest.Mock).mockResolvedValueOnce(['/some/path']);
-      (trash as jest.Mock).mockResolvedValueOnce([{ dest: '/some/path' }]);
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock).mockResolvedValue(['/some/path']);
+      (trash as jest.Mock).mockResolvedValue([{ dest: '/some/path' }]);
       await reset({ paths: 'src/**' });
       expect(log.info).toHaveBeenCalledWith(
         'reset',
@@ -72,16 +74,17 @@ describe('reset', () => {
     });
 
     it('should handle provided config', async () => {
-      (cosmiconfig as jest.Mock).mockReturnValueOnce({
-        search: jest.fn().mockResolvedValueOnce({
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue({
           config: { paths: ['src', 'test'] },
         }),
       });
-      (fg as unknown as jest.Mock).mockResolvedValueOnce([
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock).mockResolvedValue([
         '/some/root/dir/src',
         '/some/root/dir/test',
       ]);
-      (trash as jest.Mock).mockResolvedValueOnce([
+      (trash as jest.Mock).mockResolvedValue([
         { dest: '/some/root/dir/src' },
         { dest: '/some/root/dir/test' },
       ]);
@@ -97,16 +100,32 @@ describe('reset', () => {
       );
     });
 
+    it('should print a warning if no paths are provided via config', async () => {
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue({
+          config: { paths: [] },
+        }),
+      });
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock).mockResolvedValue(null);
+      await reset({ config: '/some/root/dir/reset.config.js' });
+      expect(log.warn).toHaveBeenCalledWith(
+        'reset',
+        expect.stringContaining('No paths found')
+      );
+    });
+
     it('should handle both paths and config', async () => {
-      (cosmiconfig as jest.Mock).mockReturnValueOnce({
-        search: jest.fn().mockResolvedValueOnce({
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue({
           config: { paths: ['src', 'test'] },
         }),
       });
-      (fg as unknown as jest.Mock)
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock)
         .mockResolvedValueOnce(['/some/path'])
         .mockResolvedValueOnce(['/some/root/dir/src', '/some/root/dir/test']);
-      (trash as jest.Mock).mockResolvedValueOnce([
+      (trash as jest.Mock).mockResolvedValue([
         { dest: '/some/path' },
         { dest: '/some/root/dir/src' },
         { dest: '/some/root/dir/test' },
@@ -126,15 +145,20 @@ describe('reset', () => {
       );
     });
 
-    it('should handle no paths found', async () => {
-      (cosmiconfig as jest.Mock).mockReturnValueOnce({
-        search: jest.fn().mockResolvedValueOnce({
-          config: { paths: [] },
+    it('should not spawn rm -rf if nothing is returned by `trash`', async () => {
+      (cosmiconfig as jest.Mock).mockReturnValue({
+        search: jest.fn().mockResolvedValue({
+          config: { paths: ['src', 'test'] },
         }),
       });
-      const spy = jest.spyOn(log, 'warn');
-      await reset({ paths: [], config: '/some/root/dir/reset.config.js' });
-      expect(spy).toHaveBeenCalledWith('reset', 'No paths found');
+      // @ts-expect-error jest mocking error
+      (fg as jest.Mock).mockResolvedValue([
+        '/some/root/dir/src',
+        '/some/root/dir/test',
+      ]);
+      (trash as jest.Mock).mockResolvedValue(null);
+      await reset({ config: '/some/root/dir/reset.config.js' });
+      expect(cp.spawn).not.toHaveBeenCalled();
     });
   });
 });

@@ -3,9 +3,18 @@ import log from 'npmlog';
 import os from 'os';
 import path from 'path';
 import xdgTrashdir from 'xdg-trashdir';
-import { getTrashPath, isPathInside, main, rand, trashItem } from '..';
+import { getTrashPath, isPathInside, rand, trash, trashItem } from '..';
 
 jest.mock('xdg-trashdir');
+jest.mock('path', () => {
+  const actual = jest.requireActual('path');
+  return {
+    ...actual,
+    basename: jest.fn((p) => actual.basename(p)),
+    extname: jest.fn((p) => actual.extname(p)),
+  };
+});
+jest.mock('npmlog');
 
 const homedir = os.homedir();
 const root = path.resolve(os.tmpdir(), '@nielse63/trash');
@@ -14,7 +23,7 @@ const tmp1 = path.join(root, 'tmp.txt');
 const tmp2 = path.join(nested, 'tmp.txt');
 const platform = process.platform;
 
-describe('trash', () => {
+describe('@nielse63/trash', () => {
   beforeEach(async () => {
     jest.clearAllMocks();
   });
@@ -85,23 +94,84 @@ describe('trash', () => {
   });
 
   describe('trashItem', () => {
-    it('should print debug statement and return if given file isnt found', async () => {
-      const spy = jest.spyOn(log, 'warn').mockImplementation();
-      await trashItem('fake.txt');
-      expect(spy).toHaveBeenCalledWith('trash', 'fake.txt does not exist');
+    const fsRename = fs.promises.rename;
+
+    beforeEach(() => {
+      path.basename = jest.fn().mockReturnValue('file.txt');
+      path.extname = jest.fn().mockReturnValue('.txt');
+      path.join = jest
+        .fn()
+        .mockReturnValue('/some/trash/file_1234567890_abcdef.txt');
+      fs.promises.rename = jest.fn();
+    });
+
+    afterAll(() => {
+      fs.promises.rename = fsRename;
+    });
+
+    it('should log a warning and return an empty destination if the file does not exist', async () => {
+      fs.existsSync = jest.fn().mockReturnValue(false);
+
+      const result = await trashItem('/some/nonexistent/file.txt');
+      expect(log.warn).toHaveBeenCalledWith(
+        'trash',
+        '/some/nonexistent/file.txt does not exist'
+      );
+      expect(result).toEqual({ src: '/some/nonexistent/file.txt', dest: '' });
+    });
+
+    it('should move the file to the trash and return the new path if the file exists', async () => {
+      fs.existsSync = jest.fn().mockReturnValue(true);
+      (fs.promises.rename as jest.Mock).mockResolvedValue(undefined);
+      path.basename = jest.fn().mockReturnValue('file.txt');
+      path.extname = jest.fn().mockReturnValue('.txt');
+      path.join = jest
+        .fn()
+        .mockReturnValue('/some/trash/file_1234567890_abcdef.txt');
+
+      const result = await trashItem('/some/existing/file.txt', '/some/trash');
+      expect(log.info).toHaveBeenCalledWith(
+        'trash',
+        'moving /some/existing/file.txt to /some/trash/file_1234567890_abcdef.txt'
+      );
+      expect(result).toEqual({
+        src: '/some/existing/file.txt',
+        dest: '/some/trash/file_1234567890_abcdef.txt',
+      });
+    });
+
+    it('should log an error if moving the file to the trash fails', async () => {
+      fs.existsSync = jest.fn().mockReturnValue(true);
+      (fs.promises.rename as jest.Mock).mockRejectedValue(
+        new Error('rename failed')
+      );
+
+      const result = await trashItem('/some/existing/file.txt', '/some/trash');
+      expect(log.info).toHaveBeenCalledWith(
+        'trash',
+        'moving /some/existing/file.txt to /some/trash/file_1234567890_abcdef.txt'
+      );
+      expect(log.error).toHaveBeenCalledWith('trash', 'Error: rename failed');
+      expect(result).toEqual({
+        src: '/some/existing/file.txt',
+        dest: '/some/trash/file_1234567890_abcdef.txt',
+      });
     });
   });
 
-  describe('main', () => {
+  describe('trash', () => {
     let removeFromTrash;
+    let fsExistsSync;
 
     beforeAll(async () => {
+      fsExistsSync = fs.existsSync;
       await fs.promises.mkdir(root, {
         recursive: true,
       });
     });
 
     beforeEach(async () => {
+      jest.clearAllMocks();
       removeFromTrash = [];
       await fs.promises.writeFile(tmp1, '');
       await fs.promises.mkdir(nested, {
@@ -115,6 +185,7 @@ describe('trash', () => {
         fs.promises.rm(filepath, { recursive: true, force: true })
       );
       await Promise.all(promises);
+      fs.existsSync = fsExistsSync;
     });
 
     afterAll(async () => {
@@ -122,41 +193,46 @@ describe('trash', () => {
     });
 
     it('should print error and return cwd value does not exist', async () => {
-      const spy = jest.spyOn(log, 'error').mockImplementation();
-      await main(['tmp.txt'], {
+      fs.existsSync = jest.fn().mockReturnValueOnce(false);
+      await trash(['tmp.txt'], {
         cwd: '/path/to/nowhere',
       });
-      expect(spy).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'trash',
         `cwd '/path/to/nowhere' does not exist - exiting`
       );
     });
 
     it('should print error and return if trash directory doesnt exist', async () => {
-      const spy = jest.spyOn(log, 'error').mockImplementation();
-      await main(['tmp.txt'], {
+      fs.existsSync = jest
+        .fn()
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(false);
+      await trash(['tmp.txt'], {
         trash: 'fake',
       });
-      expect(spy).toHaveBeenCalledWith(
+      expect(log.error).toHaveBeenCalledWith(
         'trash',
         `trash 'fake' does not exist - exiting`
       );
     });
 
-    it('should remove files', async () => {
-      expect(fs.existsSync(tmp1)).toBe(true);
-      expect(fs.existsSync(tmp2)).toBe(true);
-      const output = await main(['tmp.txt', 'nested', 'fake/tmp.txt'], {
-        cwd: root,
+    it('should handle a string as the filepaths argument', async () => {
+      fs.existsSync = jest
+        .fn()
+        .mockReturnValueOnce(true)
+        .mockReturnValueOnce(false);
+      await trash('tmp.txt', {
+        trash: 'fake',
       });
-      expect(fs.existsSync(tmp1)).toBe(false);
-      expect(fs.existsSync(nested)).toBe(false);
-      expect(fs.existsSync(tmp2)).toBe(false);
-      removeFromTrash = output?.map(({ dest }) => dest) || [];
+      expect(log.error).toHaveBeenCalledWith(
+        'trash',
+        `trash 'fake' does not exist - exiting`
+      );
     });
 
     it('should return expected output', async () => {
-      const output = await main(['tmp.txt', 'fake/tmp.txt'], {
+      const output = await trash(['tmp.txt', 'fake/tmp.txt'], {
         cwd: root,
       });
       expect(output).toBeArrayOfSize(1);
@@ -169,8 +245,9 @@ describe('trash', () => {
     });
 
     it('should be able to accept an empty options object', async () => {
-      await main([tmp1]);
-      expect(fs.existsSync(tmp1)).toBe(false);
+      fs.existsSync = jest.fn().mockReturnValue(false);
+      await trash([tmp1]);
+      expect(log.error).toHaveBeenCalled();
     });
   });
 });

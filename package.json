@@ -4,7 +4,7 @@
   "description": "Collection of useful node scripts and utilities",
   "scripts": {
     "test": "jest",
-    "test:coverage": "jest --coverage",
+    "test:coverage": "npm run test -- --coverage",
     "lint": "prettier --write . && eslint --fix .",
     "release": ".bin/release",
     "prepare": "husky install",
