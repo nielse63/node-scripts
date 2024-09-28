@@ -1,5 +1,5 @@
 {
   "extends": "@nielse63/tsconfig-eslint",
-  "include": ["**/*.ts", "**/*.js", ".*.js", ".bin/**/*"],
+  "include": ["**/*.ts", "**/*.js", ".*.js", ".bin/**/*", "**/*.cjs"],
   "exclude": ["**/node_modules/**", "**/dist/**"]
 }
