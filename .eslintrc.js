@@ -10,7 +10,7 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['.bin/**/*'],
+      files: ['.bin/**/*', 'config/**/*.js'],
       rules: {
         'import/no-extraneous-dependencies': 'off',
       },

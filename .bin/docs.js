@@ -1,6 +1,9 @@
 #!/usr/bin/env node
-const fs = require('fs');
+const fs = require('fs-extra');
 const path = require('path');
+const fg = require('fast-glob');
+const exec = require('./helpers/exec');
+const cp = require('child_process');
 
 const root = path.resolve(__dirname, '..');
 const packagesDir = path.join(root, 'packages');
@@ -14,18 +17,24 @@ const readReadmeTemplate = async () => {
 };
 
 const getPackages = async () => {
-  const dirs = await fs.promises.readdir(packagesDir);
-  return dirs.filter((dir) => {
-    const stat = fs.statSync(path.join(packagesDir, dir));
-    return stat.isDirectory();
+  const packageJsonFiles = await fg('packages/*/package.json', {
+    absolute: true,
   });
+  const promises = packageJsonFiles.map(async (file) => {
+    const dirname = path.dirname(file);
+    const basename = path.basename(dirname);
+    const packageJson = await fs.readJSON(file);
+    const { name, description } = packageJson;
+    return { name, description, dirname, basename };
+  });
+  return Promise.all(promises);
 };
 
 const copyPackageReadmes = async () => {
   const packages = await getPackages();
   const readmes = packages
-    .map((dir) => {
-      return path.join(packagesDir, dir, 'README.md');
+    .map(({ dirname }) => {
+      return path.join(packagesDir, dirname, 'README.md');
     })
     .filter((file) => fs.existsSync(file));
   const destFolder = path.join(root, 'docs/packages');
@@ -44,12 +53,12 @@ const copyPackageReadmes = async () => {
 const updateReadme = async () => {
   const content = await readReadmeTemplate();
   const packages = await getPackages();
-  const packagesList = packages
-    .map((pkg) => {
-      return `- [@nielse63/${pkg}](https://github.com/nielse63/node-scripts/blob/main/packages/${pkg})`;
-    })
-    .join('\n');
-  const newContent = content.replace(/{{packagesList}}/g, packagesList);
+  const header = '| Package | Description |';
+  const rows = packages.map(({ name, basename, description }) => {
+    return `| [${name}](https://github.com/nielse63/node-scripts/blob/main/packages/${basename}) | ${description} |`;
+  });
+  const table = [header, '| --- | --- |', ...rows].join('\n');
+  const newContent = content.replace(/{{packagesList}}/g, table);
   console.log('updating README.md');
   await fs.promises.writeFile(path.join(root, 'README.md'), newContent);
 };
@@ -61,10 +70,37 @@ const copyReadme = async () => {
   await fs.promises.copyFile(src, dest);
 };
 
+const runPrettier = async () => {
+  const output = await exec('git diff --name-only');
+  const changedMarkdown = output
+    .split('\n')
+    .filter(Boolean)
+    .filter((file) => file.endsWith('.md'));
+  if (!changedMarkdown.length) {
+    console.log('No markdown files to format');
+    return;
+  }
+  const child = cp.spawn('npx', ['prettier', '--write', ...changedMarkdown], {
+    stdio: 'inherit',
+  });
+  return new Promise((resolve, reject) => {
+    child.on('exit', (code) => {
+      if (code === 0) {
+        console.log('prettier ran successfully');
+        resolve();
+      } else {
+        console.error(`prettier failed: ${code}`);
+        reject();
+      }
+    });
+  });
+};
+
 const main = async () => {
   await updateReadme();
   await copyReadme();
   await copyPackageReadmes();
+  await runPrettier();
 };
 
 main().catch(console.error);

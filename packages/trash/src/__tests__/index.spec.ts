@@ -34,7 +34,7 @@ describe('trash', () => {
     });
 
     it('should return the XDG trash directory on non-macOS platforms', async () => {
-      // @ts-ignore
+      // @ts-expect-error: the xdgTrashdir object doesn't conform with the mock type
       (xdgTrashdir as jest.Mock).mockResolvedValueOnce(
         '/home/testuser/.local/share/Trash'
       );
@@ -160,7 +160,6 @@ describe('trash', () => {
         cwd: root,
       });
       expect(output).toBeArrayOfSize(1);
-      // @ts-ignore
       const [object] = output;
       expect(object).toEqual({
         src: expect.any(String),
