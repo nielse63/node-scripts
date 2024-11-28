@@ -52,7 +52,10 @@ const copyPackageReadmes = async () => {
 
 const updateReadme = async () => {
   const content = await readReadmeTemplate();
-  const packages = await getPackages();
+  const unsortedPackages = await getPackages();
+  const packages = unsortedPackages.sort((a, b) =>
+    a.name.localeCompare(b.name)
+  );
   const header = '| Package | Description |';
   const rows = packages.map(({ name, basename, description }) => {
     return `| [${name}](https://github.com/nielse63/node-scripts/blob/main/packages/${basename}) | ${description} |`;

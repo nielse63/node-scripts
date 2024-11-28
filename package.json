@@ -71,7 +71,7 @@
     "lodash": "^4.17.21",
     "plop": "^4.0.1",
     "prettier": "^3.4.1",
-    "typescript": "^5.4.0"
+    "typescript": "5.3.3"
   },
   "prettier": "@nielse63/prettier-config",
   "lint-staged": {
