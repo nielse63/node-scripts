@@ -51,7 +51,7 @@
   },
   "dependencies": {
     "commander": "^11.1.0",
-    "fast-glob": "^3.3.2",
+    "fast-glob": "^3.3.3",
     "fs-extra": "^11.2.0",
     "ignore": "^6.0.2",
     "lodash": "^4.17.21",
@@ -59,6 +59,6 @@
   },
   "devDependencies": {
     "@types/npmlog": "^7.0.0",
-    "uuid": "^11.0.3"
+    "uuid": "^11.0.5"
   }
 }
