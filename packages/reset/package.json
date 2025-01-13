@@ -61,7 +61,7 @@
     "@nielse63/trash": "file:../trash",
     "commander": "^11.1.0",
     "cosmiconfig": "^9.0.0",
-    "fast-glob": "^3.3.2",
+    "fast-glob": "^3.3.3",
     "fs-extra": "^11.2.0",
     "npmlog": "^7.0.1"
   }
