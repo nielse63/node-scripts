@@ -1,6 +1,2 @@
-#!/bin/sh
-set -e
-. "$(dirname "$0")/_/husky.sh"
-
 # lint files
 npx lint-staged
