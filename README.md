@@ -14,6 +14,7 @@
 | [@nielse63/eslint-config](https://github.com/nielse63/node-scripts/blob/main/packages/eslint-config) | Shared eslint-config |
 | [@nielse63/exec](https://github.com/nielse63/node-scripts/blob/main/packages/exec) | Run child process asynchronously |
 | [@nielse63/generate-tests](https://github.com/nielse63/node-scripts/blob/main/packages/generate-tests) | Automatically generate jest specs for uncovered source files |
+| [@nielse63/is-numeric](https://github.com/nielse63/node-scripts/blob/main/packages/is-numeric) | Determines if a given value is a number (even if it's a string) |
 | [@nielse63/prettier-config](https://github.com/nielse63/node-scripts/blob/main/packages/prettier-config) | Shared prettier config |
 | [@nielse63/reset](https://github.com/nielse63/node-scripts/blob/main/packages/reset) | Quickly clean your project of unwanted files and folders |
 | [@nielse63/trash](https://github.com/nielse63/node-scripts/blob/main/packages/trash) | Move files to trash (instead of rm -rf) |

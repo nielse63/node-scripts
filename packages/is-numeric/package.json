@@ -1,7 +1,7 @@
 {
   "name": "@nielse63/is-numeric",
   "version": "1.1.9",
-  "description": "Determines if a given value is a number (even if it&#x27;s a string)",
+  "description": "Determines if a given value is a number (even if it's a string)",
   "keywords": [
     "numeric",
     "number",
