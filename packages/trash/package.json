@@ -1,6 +1,6 @@
 {
   "name": "@nielse63/trash",
-  "version": "1.1.9",
+  "version": "1.2.0",
   "description": "Move files to trash (instead of rm -rf)",
   "keywords": [
     "trash",
