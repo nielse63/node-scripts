@@ -3,16 +3,14 @@ const path = require('path');
 const fs = require('fs');
 const fg = require('fast-glob');
 const exec = require('@nielse63/exec');
-const log = require('./helpers/log');
 
 const dryRun = process.argv.includes('--dry-run');
 const root = path.resolve(__dirname, '..');
 
 const runCommand = async (flags) => {
   const cmd = `npm install ${flags.join(' ')}`;
-  log(cmd);
   if (!dryRun) {
-    exec(cmd);
+    await exec(cmd);
   }
 };
 
@@ -62,8 +60,7 @@ const printOutdated = async (filepath) => {
   const workspace = path.relative(root, path.dirname(filepath));
   const cmd = `npm outdated --json --long --parseable${
     workspace ? ` --workspace ${workspace}` : ''
-  }`;
-  log(cmd);
+  }`.trim();
   let json = {};
   try {
     json = JSON.parse(await exec(cmd));
@@ -76,7 +73,10 @@ const printOutdated = async (filepath) => {
     return;
   }
 
-  Object.entries(json).forEach(([name, { current, latest, type }]) => {
+  Object.entries(json).forEach(([name, object]) => {
+    const { current, latest, type } = Array.isArray(object)
+      ? object[0]
+      : object;
     if (!workspace && type === 'peerDependencies') {
       return;
     }
@@ -93,12 +93,14 @@ const main = async () => {
     ignore: ['node_modules'],
   });
   const paths = files.map((file) => path.join(root, file));
+  await Promise.all(paths.map(printOutdated));
   if (dryRun) {
-    await Promise.all(paths.map(printOutdated));
     return;
   }
   const objects = await Promise.all(paths.map(updateFromFile));
-  await Promise.all(objects.map(updateDependencies));
+  for (const object of objects) {
+    await updateDependencies(object);
+  }
 };
 
 main().catch(console.error);
