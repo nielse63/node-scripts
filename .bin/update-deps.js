@@ -3,14 +3,12 @@ const path = require('path');
 const fs = require('fs');
 const fg = require('fast-glob');
 const exec = require('@nielse63/exec');
-const log = require('./helpers/log');
 
 const dryRun = process.argv.includes('--dry-run');
 const root = path.resolve(__dirname, '..');
 
 const runCommand = async (flags) => {
   const cmd = `npm install ${flags.join(' ')}`;
-  log(cmd);
   if (!dryRun) {
     await exec(cmd);
   }
@@ -63,7 +61,6 @@ const printOutdated = async (filepath) => {
   const cmd = `npm outdated --json --long --parseable${
     workspace ? ` --workspace ${workspace}` : ''
   }`.trim();
-  log(cmd);
   let json = {};
   try {
     json = JSON.parse(await exec(cmd));
@@ -101,10 +98,9 @@ const main = async () => {
     return;
   }
   const objects = await Promise.all(paths.map(updateFromFile));
-  console.log(objects);
-  // for (const object of objects) {
-  //   await updateDependencies(object);
-  // }
+  for (const object of objects) {
+    await updateDependencies(object);
+  }
 };
 
 main().catch(console.error);
