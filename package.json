@@ -1,6 +1,6 @@
 {
   "name": "node-scripts",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Collection of useful node scripts and utilities",
   "scripts": {
     "test": "jest",
