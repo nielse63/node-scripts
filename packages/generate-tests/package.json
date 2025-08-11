@@ -52,7 +52,7 @@
   "dependencies": {
     "commander": "^11.1.0",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.0",
+    "fs-extra": "^11.3.1",
     "ignore": "^6.0.2",
     "lodash": "^4.17.21",
     "npmlog": "^7.0.1"
