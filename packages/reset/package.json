@@ -62,7 +62,7 @@
     "commander": "^11.1.0",
     "cosmiconfig": "^9.0.0",
     "fast-glob": "^3.3.3",
-    "fs-extra": "^11.3.1",
+    "fs-extra": "^11.3.2",
     "npmlog": "^7.0.1"
   }
 }
