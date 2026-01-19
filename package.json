@@ -38,8 +38,8 @@
     "node": ">=22.21.1"
   },
   "devDependencies": {
-    "@babel/core": "^7.28.5",
-    "@babel/preset-env": "^7.28.5",
+    "@babel/core": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
     "@babel/preset-typescript": "^7.28.5",
     "@commitlint/cli": "^19.8.1",
     "@commitlint/config-conventional": "^19.8.1",
@@ -51,7 +51,7 @@
     "@types/fs-extra": "^11.0.4",
     "@types/jest": "^29.5.14",
     "@types/lodash": "^4.17.23",
-    "@types/node": "^22.19.5",
+    "@types/node": "^22.19.7",
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
     "babel-jest": "^29.7.0",
@@ -61,7 +61,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jest": "^28.14.0",
     "eslint-plugin-jest-extended": "^2.4.0",
-    "eslint-plugin-prettier": "^5.5.4",
+    "eslint-plugin-prettier": "^5.5.5",
     "fast-glob": "^3.3.3",
     "generate-changelog": "^1.8.0",
     "husky": "^9.1.7",
@@ -70,7 +70,7 @@
     "lint-staged": "^15.5.2",
     "lodash": "^4.17.21",
     "plop": "^4.0.4",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.0",
     "typescript": "5.3.3"
   },
   "prettier": "@nielse63/prettier-config",
