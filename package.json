@@ -69,8 +69,8 @@
     "jest-extended": "^4.0.2",
     "lint-staged": "^15.5.2",
     "lodash": "^4.17.23",
-    "plop": "^4.0.4",
-    "prettier": "^3.8.0",
+    "plop": "^4.0.5",
+    "prettier": "^3.8.1",
     "typescript": "5.3.3"
   },
   "prettier": "@nielse63/prettier-config",
